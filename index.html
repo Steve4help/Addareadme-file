@@ -3,289 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="description" content="Public Growth Networks helps people build meaningful connections.">
   <title>Public Growth Networks | PGN Singles</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f5f7fb;
-      color: #222;
-      line-height: 1.6;
-    }
-
-    header {
-      background: #ffffff;
-      padding: 18px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-      color: #173b72;
-    }
-
-    .menu a {
-      text-decoration: none;
-      color: #333;
-      margin-left: 18px;
-      font-size: 14px;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 65px 20px;
-      background: linear-gradient(135deg, #173b72, #2867b2);
-      color: white;
-    }
-
-    .hero h1 {
-      font-size: 38px;
-      margin-bottom: 12px;
-    }
-
-    .hero h2 {
-      font-size: 22px;
-      font-weight: normal;
-      margin-bottom: 15px;
-    }
-
-    .hero p {
-      max-width: 650px;
-      margin: auto;
-      font-size: 16px;
-    }
-
-    .buttons {
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 13px 24px;
-      margin: 6px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-    }
-
-    .primary {
-      background: white;
-      color: #173b72;
-    }
-
-    .secondary {
-      background: #f0b429;
-      color: #111;
-    }
-
-    section {
-      padding: 45px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #173b72;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .card h3 {
-      color: #173b72;
-      margin-bottom: 10px;
-    }
-
-    .language-box {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      margin-top: 25px;
-      text-align: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    footer {
-      background: #173b72;
-      color: white;
-      text-align: center;
-      padding: 25px;
-      margin-top: 30px;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body { background: #f5f7fb; color: #222; line-height: 1.6; }
+    header { background: #fff; padding: 18px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.08); position: sticky; top: 0; z-index: 10; }
+    .logo { font-size: 22px; font-weight: bold; color: #173b72; }
+    .menu { display: flex; gap: 18px; }
+    .menu a { text-decoration: none; color: #333; font-size: 14px; }
+    .menu a:hover, .menu a:focus { color: #2867b2; }
+    .hero { text-align: center; padding: 65px 20px; background: linear-gradient(135deg, #173b72, #2867b2); color: #fff; }
+    .hero h1 { font-size: 38px; margin-bottom: 12px; }
+    .hero h2 { font-size: 22px; font-weight: normal; margin-bottom: 15px; }
+    .hero p { max-width: 650px; margin: auto; font-size: 16px; }
+    .buttons { margin-top: 28px; }
+    .btn { display: inline-block; padding: 13px 24px; margin: 6px; border-radius: 8px; text-decoration: none; font-weight: bold; cursor: pointer; border: 2px solid transparent; font-size: 15px; }
+    .btn:focus, input:focus, select:focus, textarea:focus { outline: 3px solid rgba(240,180,41,.55); outline-offset: 2px; }
+    .primary { background: #fff; color: #173b72; }
+    .secondary { background: #f0b429; color: #111; }
+    .dark { background: #173b72; color: #fff; }
+    section { padding: 45px 20px; max-width: 1100px; margin: auto; }
+    .section-title { text-align: center; margin-bottom: 30px; color: #173b72; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .card, .language-box, .profile-form { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,.08); }
+    .card { text-align: center; }
+    .card h3 { color: #173b72; margin-bottom: 10px; }
+    .card .btn { margin-top: 18px; padding: 9px 15px; font-size: 14px; }
+    .language-box { margin-top: 25px; text-align: center; }
+    .language-box h3:not(:first-child) { margin-top: 18px; }
+    .profile-form { max-width: 650px; margin: auto; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; color: #173b72; font-weight: bold; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 11px; border: 1px solid #ccd3df; border-radius: 6px; font-size: 15px; }
+    textarea { min-height: 100px; resize: vertical; }
+    .form-message { margin-top: 15px; font-weight: bold; color: #176b3a; }
+    footer { background: #173b72; color: #fff; text-align: center; padding: 25px; margin-top: 30px; }
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 30px;
-      }
-
-      .menu a {
-        margin-left: 8px;
-        font-size: 12px;
-      }
+      header { padding: 15px; align-items: flex-start; }
+      .menu { flex-wrap: wrap; justify-content: flex-end; gap: 8px 12px; }
+      .hero h1 { font-size: 30px; }
+      .menu a { font-size: 12px; }
     }
   </style>
 </head>
-
 <body>
-
   <header>
-    <div class="logo">PGN</div>
-
-    <div class="menu">
+    <a class="logo" href="#home" aria-label="PGN home">PGN</a>
+    <nav class="menu" aria-label="Main navigation">
       <a href="#home">Home</a>
       <a href="#about">About</a>
       <a href="#features">Features</a>
       <a href="#languages">Languages</a>
-    </div>
+      <a href="#profile">Create Profile</a>
+    </nav>
   </header>
 
-
-  <section class="hero" id="home">
-
-    <h1>Public Growth Networks</h1>
-
-    <h2>PGN Singles</h2>
-
-    <p>
-      Find meaningful connections, meet compatible people,
-      and build relationships based on shared values and interests.
-    </p>
-
-    <div class="buttons">
-      <a href="#" class="btn primary">Find Your Match</a>
-
-      <a href="#" class="btn secondary">Create Your Profile</a>
-    </div>
-
-  </section>
-
-
-  <section id="about">
-
-    <h2 class="section-title">About PGN Singles</h2>
-
-    <div class="card">
-
-      <h3>Connect. Discover. Grow.</h3>
-
-      <p>
-        PGN Singles is part of Public Growth Networks,
-        created to help people meet others with similar
-        interests, values, goals and life plans.
-      </p>
-
-      <br>
-
-      <p>
-        Our goal is to create a respectful, safe and
-        welcoming community where meaningful connections
-        can begin.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section id="features">
-
-    <h2 class="section-title">What You Can Do</h2>
-
-    <div class="cards">
-
-      <div class="card">
-        <h3>💑 Find Your Match</h3>
-        <p>
-          Discover people who may be compatible with you.
-        </p>
+  <main>
+    <section class="hero" id="home">
+      <h1>Public Growth Networks</h1>
+      <h2>PGN Singles</h2>
+      <p>Find meaningful connections, meet compatible people, and build relationships based on shared values and interests.</p>
+      <div class="buttons">
+        <a href="#matches" class="btn primary">Find Your Match</a>
+        <a href="#profile" class="btn secondary">Create Your Profile</a>
       </div>
+    </section>
 
+    <section id="about">
+      <h2 class="section-title">About PGN Singles</h2>
       <div class="card">
-        <h3>👤 Create Your Profile</h3>
-        <p>
-          Tell others about yourself, your interests and your goals.
-        </p>
+        <h3>Connect. Discover. Grow.</h3>
+        <p>PGN Singles is part of Public Growth Networks, created to help people meet others with similar interests, values, goals and life plans.</p>
+        <br>
+        <p>Our goal is to create a respectful, safe and welcoming community where meaningful connections can begin.</p>
       </div>
+    </section>
 
-      <div class="card">
-        <h3>🌍 Meet People</h3>
-        <p>
-          Connect with people from different communities and countries.
-        </p>
+    <section id="features">
+      <h2 class="section-title">What You Can Do</h2>
+      <div class="cards">
+        <div class="card"><h3>💑 Find Your Match</h3><p>Discover people who may be compatible with you.</p><a class="btn dark" href="#matches">Browse matches</a></div>
+        <div class="card"><h3>👤 Create Your Profile</h3><p>Tell others about yourself, your interests and your goals.</p><a class="btn secondary" href="#profile">Create profile</a></div>
+        <div class="card"><h3>🌍 Meet People</h3><p>Connect with people from different communities and countries.</p><a class="btn dark" href="#matches">Meet people</a></div>
+        <div class="card"><h3>🤝 Build Connections</h3><p>Start conversations and develop meaningful relationships.</p><a class="btn dark" href="#about">Learn more</a></div>
       </div>
+    </section>
 
-      <div class="card">
-        <h3>🤝 Build Connections</h3>
-        <p>
-          Start conversations and develop meaningful relationships.
-        </p>
+    <section id="matches">
+      <h2 class="section-title">Find Your Match</h2>
+      <div class="cards">
+        <div class="card"><h3>Shared interests</h3><p>Connect with people who enjoy the same activities and conversations.</p></div>
+        <div class="card"><h3>Shared values</h3><p>Build relationships around respect, trust and common goals.</p></div>
+        <div class="card"><h3>New communities</h3><p>Meet welcoming people from different backgrounds and countries.</p></div>
       </div>
+      <p style="text-align:center; margin-top:22px;"><a class="btn secondary" href="#profile">Create a profile to get started</a></p>
+    </section>
 
-    </div>
+    <section id="profile">
+      <h2 class="section-title">Create Your Profile</h2>
+      <form class="profile-form" id="profileForm">
+        <div class="form-group"><label for="name">Your name</label><input id="name" name="name" type="text" required></div>
+        <div class="form-group"><label for="interest">Main interest</label><input id="interest" name="interest" type="text" placeholder="For example, hiking or music" required></div>
+        <div class="form-group"><label for="language">Preferred language</label><select id="language" name="language" required><option value="">Choose a language</option><option>English</option><option>ትግርኛ</option><option>አማርኛ</option></select></div>
+        <div class="form-group"><label for="bio">Tell us about yourself</label><textarea id="bio" name="bio" required></textarea></div>
+        <button class="btn secondary" type="submit">Save Profile</button>
+        <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+      </form>
+    </section>
 
-  </section>
+    <section id="languages">
+      <h2 class="section-title">PGN in Three Languages</h2>
+      <div class="language-box"><h3>English</h3><p>Find Your Match</p><h3>ትግርኛ</h3><p>ተመሳሳሊ ሰብ ድለ</p><h3>አማርኛ</h3><p>ተስማሚ ሰው ይፈልጉ</p></div>
+    </section>
+  </main>
 
+  <footer><p>© 2026 Public Growth Networks</p><p>PGN Singles — Connecting People, Building Communities</p></footer>
 
-  <section id="languages">
-
-    <h2 class="section-title">PGN in Three Languages</h2>
-
-    <div class="language-box">
-
-      <h3>English</h3>
-      <p>Find Your Match</p>
-
-      <br>
-
-      <h3>ትግርኛ</h3>
-      <p>ተመሳሳሊ ሰብ ድለ</p>
-
-      <br>
-
-      <h3>አማርኛ</h3>
-      <p>ተስማሚ ሰው ይፈልጉ</p>
-
-    </div>
-
-  </section>
-
-
-  <footer>
-
-    <p>© 2026 Public Growth Networks</p>
-
-    <p>PGN Singles — Connecting People, Building Communities</p>
-
-  </footer>
-
+  <script>
+    document.getElementById('profileForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      document.getElementById('formMessage').textContent = `Thanks, ${name}! Your profile details are ready to connect you with the PGN community.`;
+      this.reset();
+    });
+  </script>
 </body>
 </html>
