@@ -655,8 +655,7 @@ setLanguage(
   const footer = document.querySelector('footer');
   footer.insertAdjacentHTML('beforeend','<div class="pgn-legal-links"><button class="pgn-open" data-dialog="pgnPrivacy" type="button">Privacy</button><button class="pgn-open" data-dialog="pgnTerms" type="button">Terms</button><button class="pgn-open" data-dialog="pgnSafety" type="button">Safety Rules</button></div>');
 
-  const scripts = Array.from(document.scripts).map(s => s.textContent).join('
-');
+  const scripts = Array.from(document.scripts).map(s => s.textContent).join('');
   const urlMatch = scripts.match(/PROJECT_URL\s*=\s*['"]([^'"]+)/);
   const keyMatch = scripts.match(/PUBLISHABLE_KEY\s*=\s*['"]([^'"]+)/);
   if (!urlMatch || !keyMatch || !window.supabase) return;
