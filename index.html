@@ -51,6 +51,30 @@
     input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px #103b7012;outline:none}
     .privacy{font-size:.9rem;color:#52627a;margin:14px 0 0}
     .section-soft{background:#edf4fb80}
+    .account-actions{display:flex;gap:8px;align-items:center}
+    .account-actions button{white-space:nowrap}
+    .mini{padding:9px 14px;border-radius:10px;font-weight:800;border:1px solid #ccd6e4;background:#fff;color:var(--blue);cursor:pointer}
+    .mini.primary-mini{background:var(--blue);color:#fff;border-color:var(--blue)}
+    .member-status{max-width:780px;margin:0 auto 18px;padding:13px 16px;border-radius:12px;background:#fff4cf;color:#6c5100;font-weight:700}
+    .member-status.ok{background:#e7f8ef;color:#17653a}
+    .matches-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .match-card{background:#fff;border:1px solid #e5edf6;border-radius:18px;padding:20px;box-shadow:0 10px 30px #17355712}
+    .match-card h3{color:var(--blue);margin:10px 0 5px}
+    .match-avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;background:#edf3f9}
+    dialog{border:0;border-radius:20px;padding:0;max-width:440px;width:calc(100% - 28px);box-shadow:0 25px 80px #07182f55}
+    dialog::backdrop{background:#07182fa8;backdrop-filter:blur(3px)}
+    .dialog-card{padding:26px;background:#fff}
+    .dialog-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .dialog-head h2{margin:0;color:var(--blue)}
+    .icon-btn{border:0;background:#eef3f8;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:1.2rem}
+    .auth-tabs{display:flex;gap:8px;margin:20px 0}
+    .auth-tabs button{flex:1;padding:10px;border-radius:10px;border:1px solid #ccd6e4;background:#fff;font-weight:800;cursor:pointer}
+    .auth-tabs button.active{background:var(--blue);color:#fff}
+    .auth-pane{display:grid;gap:14px}
+    .auth-pane[hidden]{display:none}
+    .auth-message{min-height:24px;margin:12px 0 0;color:#9b1c31;font-weight:700}
+    .pilot-note{max-width:780px;margin:0 auto 22px;padding:14px 16px;border-left:5px solid var(--gold);background:#fff;border-radius:10px}
+    .hidden{display:none!important}
     textarea{min-height:110px}
     .full{grid-column:1/-1}
     footer{background:var(--blue);color:#fff;text-align:center;padding:28px 20px}
@@ -76,6 +100,10 @@
       <button class="lang active" data-lang="en">English</button>
       <button class="lang" data-lang="ti">ትግርኛ</button>
       <button class="lang" data-lang="am">አማርኛ</button>
+    </div>
+    <div class="account-actions">
+      <button id="openAuth" class="mini primary-mini" type="button">Sign up / Log in</button>
+      <button id="logoutBtn" class="mini hidden" type="button">Log out</button>
     </div>
   </div>
 </header>
@@ -173,77 +201,64 @@
 
   <section id="profile">
     <div class="wrap">
-      <h2 class="title" data-i18n="profileTitle">
-        Create Your Profile
-      </h2>
-
+      <h2 class="title">Your PGN Profile</h2>
+      <div id="memberStatus" class="member-status">Sign up or log in to create and securely save your profile.</div>
+      <div class="pilot-note"><strong>Private pilot:</strong> New profiles stay private until PGN administration approves them.</div>
       <form id="profileForm">
         <div class="grid">
-          <label>
-            <span data-i18n="name">Full name</span>
-            <input required name="name">
-          </label>
-
-          <label>
-            <span data-i18n="age">Age</span>
-            <input required min="18" type="number" name="age">
-          </label>
-
-          <label>
-            <span data-i18n="gender">Gender</span>
-            <select required name="gender">
-              <option value="" data-i18n="choose">Choose</option>
-              <option data-i18n="woman">Woman</option>
-              <option data-i18n="man">Man</option>
-            </select>
-          </label>
-
-          <label>
-            <span data-i18n="location">Location</span>
-            <input required name="location">
-          </label>
-
-          <label>
-            <span data-i18n="phone">Phone number (required)</span>
-            <input required type="tel" name="phone">
-          </label>
-
-          <label>
-            <span data-i18n="email">Email (optional)</span>
-            <input type="email" name="email">
-          </label>
-
-          <label class="full">
-            <span data-i18n="about">
-              About me and the person I hope to meet
-            </span>
-            <textarea required name="about"></textarea>
-          </label>
-
-          <label class="full">
-            <input required
-                   type="checkbox"
-                   name="safety"
-                   style="width:auto">
-
-            <span data-i18n="safety">
-              I agree to communicate respectfully and follow the
-              PGN Singles safety rules.
-            </span>
-          </label>
+          <label><span>Display name</span><input required name="display_name" maxlength="80"></label>
+          <label><span>Age (18+)</span><input required min="18" max="100" type="number" name="age"></label>
+          <label><span>Gender</span><select required name="gender"><option value="">Choose</option><option value="woman">Woman</option><option value="man">Man</option></select></label>
+          <label><span>Country</span><input required name="country" maxlength="80"></label>
+          <label><span>City</span><input required name="city" maxlength="80"></label>
+          <label><span>Languages (comma separated)</span><input name="languages" maxlength="180" placeholder="Tigrinya, Amharic, English"></label>
+          <label><span>Education</span><input name="education" maxlength="120"></label>
+          <label><span>Faith</span><input name="faith" maxlength="100"></label>
+          <label><span>Preferred minimum age</span><input min="18" max="100" type="number" name="preferred_age_min"></label>
+          <label><span>Preferred maximum age</span><input min="18" max="100" type="number" name="preferred_age_max"></label>
+          <label class="full"><span>Profile photo (JPG, PNG or WebP; max 5MB)</span><input accept="image/jpeg,image/png,image/webp" type="file" name="avatar"></label>
+          <label class="full"><span>About me</span><textarea required maxlength="1200" name="bio"></textarea></label>
+          <label class="full"><span>The person I hope to meet</span><textarea required maxlength="1200" name="looking_for"></textarea></label>
+          <label class="full"><input required type="checkbox" name="safety" style="width:auto"> I am 18 or older and agree to the PGN Singles safety rules.</label>
         </div>
-
-        <button class="btn primary"
-                type="submit"
-                data-i18n="save">
-          Create My Profile
-        </button>
-
-        <p class="privacy" data-i18n="privacy">Your information will not be shown publicly until secure storage and member verification are connected.</p>
+        <button id="saveProfile" class="btn primary" type="submit">Save My Profile</button>
+        <p class="privacy">Your email and login credentials are never shown on your public profile.</p>
         <p id="formMessage" role="status" aria-live="polite"></p>
       </form>
     </div>
   </section>
+
+  <section id="matches" class="section-soft">
+    <div class="wrap">
+      <h2 class="title">Approved Pilot Members</h2>
+      <div id="matchesMessage" class="member-status">Log in to view approved pilot profiles.</div>
+      <div id="matchesGrid" class="matches-grid"></div>
+    </div>
+  </section>
+
+  <dialog id="authDialog">
+    <div class="dialog-card">
+      <div class="dialog-head"><h2>PGN Singles Account</h2><button id="closeAuth" class="icon-btn" type="button" aria-label="Close">×</button></div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-pane="signupPane" type="button">Sign up</button>
+        <button class="auth-tab" data-pane="loginPane" type="button">Log in</button>
+      </div>
+      <form id="signupPane" class="auth-pane">
+        <label>Display name<input required name="display_name" maxlength="80"></label>
+        <label>Email<input required type="email" name="email" autocomplete="email"></label>
+        <label>Password<input required type="password" name="password" minlength="8" autocomplete="new-password"></label>
+        <button class="btn primary" type="submit">Create account</button>
+      </form>
+      <form id="loginPane" class="auth-pane" hidden>
+        <label>Email<input required type="email" name="email" autocomplete="email"></label>
+        <label>Password<input required type="password" name="password" autocomplete="current-password"></label>
+        <button class="btn primary" type="submit">Log in</button>
+        <button id="resetPassword" class="mini" type="button">Forgot password?</button>
+      </form>
+      <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+
 </main>
 
 <footer>
@@ -416,6 +431,204 @@ document.getElementById('profileForm')
 setLanguage(
   localStorage.getItem('pgnLanguage') || 'en'
 );
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const PROJECT_URL = 'https://ymxdekkfstayudfzouct.supabase.co';
+  const PUBLISHABLE_KEY = 'sb_publishable_xayaD8SEeSR4fM_UOkKW6w_2IcwuyLb';
+  const client = window.supabase.createClient(PROJECT_URL, PUBLISHABLE_KEY);
+  const authDialog = document.getElementById('authDialog');
+  const authMessage = document.getElementById('authMessage');
+  const memberStatus = document.getElementById('memberStatus');
+  const matchesMessage = document.getElementById('matchesMessage');
+  const profileForm = document.getElementById('profileForm');
+  const openAuth = document.getElementById('openAuth');
+  const logoutBtn = document.getElementById('logoutBtn');
+  let currentUser = null;
+  let currentProfile = null;
+
+  const message = (el, text, ok = false) => {
+    el.textContent = text;
+    el.style.color = ok ? '#17653a' : '#9b1c31';
+  };
+
+  openAuth.addEventListener('click', () => authDialog.showModal());
+  document.getElementById('closeAuth').addEventListener('click', () => authDialog.close());
+  authDialog.addEventListener('click', e => { if (e.target === authDialog) authDialog.close(); });
+
+  document.querySelectorAll('.auth-tab').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+      document.querySelectorAll('.auth-pane').forEach(p => p.hidden = p.id !== button.dataset.pane);
+      authMessage.textContent = '';
+    });
+  });
+
+  document.getElementById('signupPane').addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    message(authMessage, 'Creating your secure account…', true);
+    const { error } = await client.auth.signUp({
+      email: data.get('email'),
+      password: data.get('password'),
+      options: { data: { display_name: data.get('display_name') } }
+    });
+    if (error) return message(authMessage, error.message);
+    message(authMessage, 'Account created. Check your email to confirm your address, then log in.', true);
+  });
+
+  document.getElementById('loginPane').addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    message(authMessage, 'Logging in…', true);
+    const { error } = await client.auth.signInWithPassword({
+      email: data.get('email'),
+      password: data.get('password')
+    });
+    if (error) return message(authMessage, error.message);
+    authDialog.close();
+    await refreshSession();
+  });
+
+  document.getElementById('resetPassword').addEventListener('click', async () => {
+    const email = document.querySelector('#loginPane [name="email"]').value.trim();
+    if (!email) return message(authMessage, 'Enter your email first.');
+    const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    message(authMessage, error ? error.message : 'Password reset email sent.', !error);
+  });
+
+  logoutBtn.addEventListener('click', async () => {
+    await client.auth.signOut();
+    await refreshSession();
+  });
+
+  profileForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!currentUser) { authDialog.showModal(); return; }
+    const data = new FormData(profileForm);
+    const age = Number(data.get('age'));
+    const year = new Date().getFullYear() - age;
+    let avatarPath = currentProfile?.avatar_path || null;
+    const avatar = data.get('avatar');
+
+    message(document.getElementById('formMessage'), 'Saving securely…', true);
+    if (avatar && avatar.size) {
+      if (avatar.size > 5 * 1024 * 1024) return message(document.getElementById('formMessage'), 'Photo must be smaller than 5MB.');
+      const ext = (avatar.name.split('.').pop() || 'jpg').toLowerCase();
+      avatarPath = currentUser.id + '/profile.' + ext;
+      const upload = await client.storage.from('avatars').upload(avatarPath, avatar, { upsert: true, contentType: avatar.type });
+      if (upload.error) return message(document.getElementById('formMessage'), upload.error.message);
+    }
+
+    const payload = {
+      id: currentUser.id,
+      display_name: String(data.get('display_name')).trim(),
+      birth_date: year + '-01-01',
+      gender: data.get('gender'),
+      country: String(data.get('country')).trim(),
+      city: String(data.get('city')).trim(),
+      languages: String(data.get('languages')).split(',').map(x => x.trim()).filter(Boolean),
+      education: String(data.get('education')).trim(),
+      faith: String(data.get('faith')).trim(),
+      bio: String(data.get('bio')).trim(),
+      looking_for: String(data.get('looking_for')).trim(),
+      preferred_age_min: Number(data.get('preferred_age_min')) || null,
+      preferred_age_max: Number(data.get('preferred_age_max')) || null,
+      avatar_path: avatarPath
+    };
+    const { data: saved, error } = await client.from('profiles').upsert(payload).select().single();
+    if (error) return message(document.getElementById('formMessage'), error.message);
+    currentProfile = saved;
+    message(document.getElementById('formMessage'), 'Profile saved securely. PGN administration will review it for the private pilot.', true);
+    updateStatus();
+  });
+
+  async function loadProfile() {
+    if (!currentUser) return;
+    const { data, error } = await client.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
+    if (error) return message(memberStatus, error.message);
+    currentProfile = data;
+    if (!data) return;
+    profileForm.display_name.value = data.display_name || '';
+    profileForm.age.value = data.birth_date ? Math.max(18, new Date().getFullYear() - new Date(data.birth_date).getFullYear()) : '';
+    profileForm.gender.value = data.gender || '';
+    profileForm.country.value = data.country || '';
+    profileForm.city.value = data.city || '';
+    profileForm.languages.value = (data.languages || []).join(', ');
+    profileForm.education.value = data.education || '';
+    profileForm.faith.value = data.faith || '';
+    profileForm.bio.value = data.bio || '';
+    profileForm.looking_for.value = data.looking_for || '';
+    profileForm.preferred_age_min.value = data.preferred_age_min || '';
+    profileForm.preferred_age_max.value = data.preferred_age_max || '';
+  }
+
+  function updateStatus() {
+    if (!currentUser) {
+      memberStatus.className = 'member-status';
+      memberStatus.textContent = 'Sign up or log in to create and securely save your profile.';
+      profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
+      return;
+    }
+    profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = false);
+    memberStatus.className = 'member-status ' + (currentProfile?.pilot_approved ? 'ok' : '');
+    memberStatus.textContent = currentProfile?.pilot_approved
+      ? 'Your profile is approved for the private pilot.'
+      : 'You are logged in. Your profile remains private until PGN administration approves it.';
+  }
+
+  async function loadMatches() {
+    const grid = document.getElementById('matchesGrid');
+    grid.innerHTML = '';
+    if (!currentUser) { matchesMessage.textContent = 'Log in to view approved pilot profiles.'; return; }
+    const { data, error } = await client.from('profiles')
+      .select('id,display_name,birth_date,gender,country,city,languages,education,faith,bio,looking_for,avatar_path,verified')
+      .eq('active', true).eq('pilot_approved', true).neq('id', currentUser.id).limit(30);
+    if (error) { matchesMessage.textContent = error.message; return; }
+    matchesMessage.textContent = data.length ? data.length + ' approved pilot profile(s).' : 'No approved profiles are available yet.';
+    for (const p of data) {
+      let avatarUrl = '';
+      if (p.avatar_path) {
+        const signed = await client.storage.from('avatars').createSignedUrl(p.avatar_path, 900);
+        avatarUrl = signed.data?.signedUrl || '';
+      }
+      const age = p.birth_date ? new Date().getFullYear() - new Date(p.birth_date).getFullYear() : '';
+      const card = document.createElement('article');
+      card.className = 'match-card';
+      card.innerHTML =
+        (avatarUrl ? '<img class="match-avatar" alt="" src="' + avatarUrl + '">' : '<div class="match-avatar"></div>') +
+        '<h3>' + escapeHtml(p.display_name) + (p.verified ? ' ✓' : '') + '</h3>' +
+        '<p>' + escapeHtml([age && age + ' years', p.city, p.country].filter(Boolean).join(' • ')) + '</p>' +
+        '<p>' + escapeHtml(p.bio || '') + '</p>' +
+        '<button class="mini like-btn" data-id="' + p.id + '" type="button">Show interest</button>';
+      grid.appendChild(card);
+    }
+    document.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', async () => {
+      const { error } = await client.from('likes').insert({ sender_id: currentUser.id, receiver_id: btn.dataset.id });
+      btn.textContent = error ? (error.code === '23505' ? 'Interest already sent' : 'Could not send') : 'Interest sent ✓';
+      btn.disabled = true;
+    }));
+  }
+
+  const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+
+  async function refreshSession() {
+    const { data } = await client.auth.getSession();
+    currentUser = data.session?.user || null;
+    openAuth.classList.toggle('hidden', !!currentUser);
+    logoutBtn.classList.toggle('hidden', !currentUser);
+    currentProfile = null;
+    if (currentUser) await loadProfile();
+    updateStatus();
+    await loadMatches();
+  }
+
+  client.auth.onAuthStateChange(() => setTimeout(refreshSession, 0));
+  refreshSession();
+})();
 </script>
 </body>
 </html>
