@@ -430,17 +430,6 @@ document.querySelectorAll('.lang').forEach(button => {
   });
 });
 
-document.getElementById('profileForm')
-  .addEventListener('submit', event => {
-    event.preventDefault();
-
-    const lang =
-      localStorage.getItem('pgnLanguage') || 'en';
-
-    document.getElementById('formMessage').textContent =
-      copy[lang].saved;
-  });
-
 setLanguage(
   localStorage.getItem('pgnLanguage') || 'en'
 );
@@ -585,7 +574,9 @@ setLanguage(
     if (!currentUser) {
       memberStatus.className = 'member-status';
       memberStatus.textContent = words.loginPrompt;
-      profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
+      // Visitors may complete the form before creating an account.
+      // Authentication is requested only when they try to save it.
+      profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = false);
       return;
     }
     profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = false);
@@ -650,14 +641,6 @@ setLanguage(
   refreshSession();
 })();
 </script>
-</body>
-</html>
-
-
-
-  
-    
-
 
 <script>
 (() => {
@@ -716,3 +699,5 @@ setLanguage(
   pgnClient.auth.onAuthStateChange(()=>setTimeout(refreshExtra,0));refreshExtra();
 })();
 </script>
+</body>
+</html>
