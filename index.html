@@ -7,7 +7,10 @@
   <style>
     :root{--blue:#103b70;--pink:#d52f7e;--gold:#f4b942;--ink:#172033;--soft:#f5f8fc;--white:#fff}
     *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,"Noto Sans Ethiopic",sans-serif;color:var(--ink);background:var(--soft);line-height:1.55}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,Arial,"Noto Sans Ethiopic",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f8fbff 0,#f5f8fc 52%,#eef4fb 100%);line-height:1.55}
+    button,a,input,select,textarea{font:inherit}
+    a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #f4b942;outline-offset:3px}
     header{background:var(--white);box-shadow:0 2px 14px #17355718;position:sticky;top:0;z-index:10}
     .nav{max-width:1100px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
     .brand{display:flex;align-items:center;gap:12px}
@@ -17,19 +20,24 @@
     .lang{border:1px solid #ccd6e4;background:#fff;color:var(--blue);border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
     .lang.active{background:var(--blue);color:#fff}
     main{overflow:hidden}
-    .hero{max-width:1100px;margin:auto;padding:72px 20px 54px;text-align:center}
+    .hero{max-width:1100px;margin:auto;padding:78px 20px 62px;text-align:center;position:relative}
+    .hero:before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:#d52f7e12;filter:blur(8px);left:50%;top:42%;transform:translate(-50%,-50%);z-index:-1}
     .eyebrow{color:var(--pink);font-weight:800}
     .hero h1{font-size:clamp(2.2rem,7vw,4.5rem);line-height:1.05;color:var(--blue);margin:12px 0}
     .hero p{max-width:720px;margin:0 auto 26px;font-size:1.1rem}
     .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-    .btn{display:inline-block;border:0;border-radius:12px;padding:14px 22px;font-weight:800;text-decoration:none;cursor:pointer}
+    .btn{display:inline-block;border:0;border-radius:12px;padding:14px 22px;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+    .btn:not(.locked):hover{transform:translateY(-2px);box-shadow:0 10px 24px #17355725}
+    .trust{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px auto 0;color:#42526b;font-size:.94rem}
+    .trust span{background:#fff;border:1px solid #dce5f0;border-radius:999px;padding:7px 12px}
     .primary{background:var(--pink);color:#fff}
     .secondary{background:#fff;color:var(--blue);border:2px solid var(--blue)}
     section{padding:56px 20px}
     .wrap{max-width:1000px;margin:auto}
     .title{text-align:center;color:var(--blue);font-size:2rem;margin:0 0 28px}
     .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .card{background:#fff;padding:24px;border-radius:18px;box-shadow:0 10px 30px #17355712}
+    .card{background:#fff;padding:26px;border-radius:18px;border:1px solid #e8eef6;box-shadow:0 10px 30px #17355712;transition:transform .2s ease,box-shadow .2s ease}
+    .card:hover{transform:translateY(-4px);box-shadow:0 16px 36px #1735571f}
     .card h3{color:var(--blue)}
     .plan{max-width:680px;margin:auto;background:#fff;border:3px solid var(--gold);border-radius:22px;padding:30px;text-align:center;box-shadow:0 12px 36px #17355718}
     .price{font-size:2.8rem;font-weight:900;color:var(--pink)}
@@ -39,12 +47,15 @@
     form{max-width:780px;margin:auto;background:#fff;padding:28px;border-radius:20px;box-shadow:0 10px 30px #17355712}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
     label{font-weight:700;color:var(--blue)}
-    input,select,textarea{width:100%;margin-top:6px;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit}
+    input,select,textarea{width:100%;margin-top:6px;padding:13px;border:1px solid #cbd5e1;border-radius:10px;background:#fff}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px #103b7012;outline:none}
+    .privacy{font-size:.9rem;color:#52627a;margin:14px 0 0}
+    .section-soft{background:#edf4fb80}
     textarea{min-height:110px}
     .full{grid-column:1/-1}
     footer{background:var(--blue);color:#fff;text-align:center;padding:28px 20px}
     @media(max-width:700px){
-      .nav{align-items:flex-start}
+      .nav{align-items:center;padding:10px 14px;gap:10px}
       .brand-text{display:none}
       .brand img{width:95px}
       .cards,.grid{grid-template-columns:1fr}
@@ -83,17 +94,17 @@
     </p>
 
     <div class="actions">
-      <a class="btn primary" href="#profile" data-i18n="create">
-        Create Your Profile
-      </a>
-
-      <a class="btn secondary" href="#membership" data-i18n="membership">
-        View Membership
-      </a>
+      <a class="btn primary" href="#profile" data-i18n="create">Create Your Profile</a>
+      <a class="btn secondary" href="#membership" data-i18n="membership">View Membership</a>
+    </div>
+    <div class="trust" aria-label="PGN Singles commitments">
+      <span data-i18n="adults">✓ Adults 18+ only</span>
+      <span data-i18n="respect">✓ Respect first</span>
+      <span data-i18n="emailOptional">✓ Email is optional</span>
     </div>
   </section>
 
-  <section>
+  <section class="section-soft">
     <div class="wrap">
       <h2 class="title" data-i18n="howTitle">
         How PGN Singles Works
@@ -228,7 +239,8 @@
           Create My Profile
         </button>
 
-        <p id="formMessage" role="status"></p>
+        <p class="privacy" data-i18n="privacy">Your information will not be shown publicly until secure storage and member verification are connected.</p>
+        <p id="formMessage" role="status" aria-live="polite"></p>
       </form>
     </div>
   </section>
@@ -248,6 +260,10 @@ const copy = {
     intro: 'A respectful place for genuine singles to create a profile, discover compatible people and connect safely.',
     create: 'Create Your Profile',
     membership: 'View Membership',
+    adults: '✓ Adults 18+ only',
+    respect: '✓ Respect first',
+    emailOptional: '✓ Email is optional',
+    privacy: 'Your information will not be shown publicly until secure storage and member verification are connected.',
     howTitle: 'How PGN Singles Works',
     step1t: '1. Create a profile',
     step1d: 'Tell us about yourself and the person you hope to meet.',
@@ -284,6 +300,10 @@ const copy = {
     intro: 'ንናይ ሓቂ ዝምድና ዝደልዩ ንጽል ሰባት፣ ፕሮፋይል ዝፈጥሩሉን ብውሕስነት ዝራኸቡሉን ክብሪ ዘለዎ ቦታ።',
     create: 'ፕሮፋይልካ ፍጠር',
     membership: 'ኣባልነት ርአ',
+    adults: '✓ ን18 ዓመትን ልዕሊኡን ጥራይ',
+    respect: '✓ ቅድሚ ኩሉ ክብሪ',
+    emailOptional: '✓ ኢመይል ኣማራጺ እዩ',
+    privacy: 'ውሑስ ምዕቃብን ምርግጋጽ ኣባልነትን ክሳዕ ዝራኸብ፣ ሓበሬታኻ ንህዝቢ ኣይረአን።',
     howTitle: 'PGN Singles ከመይ ይሰርሕ?',
     step1t: '1. ፕሮፋይል ፍጠር',
     step1d: 'ብዛዕባ ነብስኻን ክትረኽቦ እትደሊ ሰብን ግለጽ።',
@@ -320,6 +340,10 @@ const copy = {
     intro: 'እውነተኛ ግንኙነት የሚፈልጉ ያላገቡ ሰዎች መገለጫ የሚፈጥሩበት፣ ተስማሚ ሰዎችን የሚያገኙበትና በደህንነት የሚገናኙበት ክብር ያለው ቦታ።',
     create: 'መገለጫዎን ይፍጠሩ',
     membership: 'አባልነትን ይመልከቱ',
+    adults: '✓ ለ18 ዓመትና ከዚያ በላይ ብቻ',
+    respect: '✓ ክብር ቀዳሚ ነው',
+    emailOptional: '✓ ኢሜይል አማራጭ ነው',
+    privacy: 'ደህንነቱ የተጠበቀ ማከማቻና የአባልነት ማረጋገጫ እስኪገናኝ ድረስ መረጃዎ በይፋ አይታይም።',
     howTitle: 'PGN Singles እንዴት ይሰራል?',
     step1t: '1. መገለጫ ይፍጠሩ',
     step1d: 'ስለራስዎና ማግኘት ስለሚፈልጉት ሰው ይግለጹ።',
