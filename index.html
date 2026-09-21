@@ -201,28 +201,28 @@
 
   <section id="profile">
     <div class="wrap">
-      <h2 class="title">Your PGN Profile</h2>
-      <div id="memberStatus" class="member-status">Sign up or log in to create and securely save your profile.</div>
-      <div class="pilot-note"><strong>Private pilot:</strong> New profiles stay private until PGN administration approves them.</div>
+      <h2 class="title" data-i18n="profileHeading">Your PGN Profile</h2>
+      <div id="memberStatus" class="member-status" data-i18n="loginPrompt">Sign up or log in to create and securely save your profile.</div>
+      <div class="pilot-note"><strong data-i18n="pilotLabel">Private pilot:</strong> <span data-i18n="pilotText">New profiles stay private until PGN administration approves them.</span></div>
       <form id="profileForm">
         <div class="grid">
-          <label><span>Display name</span><input required name="display_name" maxlength="80"></label>
-          <label><span>Age (18+)</span><input required min="18" max="100" type="number" name="age"></label>
-          <label><span>Gender</span><select required name="gender"><option value="">Choose</option><option value="woman">Woman</option><option value="man">Man</option></select></label>
-          <label><span>Country</span><input required name="country" maxlength="80"></label>
-          <label><span>City</span><input required name="city" maxlength="80"></label>
-          <label><span>Languages (comma separated)</span><input name="languages" maxlength="180" placeholder="Tigrinya, Amharic, English"></label>
-          <label><span>Education</span><input name="education" maxlength="120"></label>
-          <label><span>Faith</span><input name="faith" maxlength="100"></label>
-          <label><span>Preferred minimum age</span><input min="18" max="100" type="number" name="preferred_age_min"></label>
-          <label><span>Preferred maximum age</span><input min="18" max="100" type="number" name="preferred_age_max"></label>
-          <label class="full"><span>Profile photo (JPG, PNG or WebP; max 5MB)</span><input accept="image/jpeg,image/png,image/webp" type="file" name="avatar"></label>
-          <label class="full"><span>About me</span><textarea required maxlength="1200" name="bio"></textarea></label>
-          <label class="full"><span>The person I hope to meet</span><textarea required maxlength="1200" name="looking_for"></textarea></label>
-          <label class="full"><input required type="checkbox" name="safety" style="width:auto"> I am 18 or older and agree to the PGN Singles safety rules.</label>
+          <label><span data-i18n="displayName">Display name</span><input required name="display_name" maxlength="80"></label>
+          <label><span data-i18n="age18">Age (18+)</span><input required min="18" max="100" type="number" name="age"></label>
+          <label><span data-i18n="gender">Gender</span><select required name="gender"><option value="" data-i18n="choose">Choose</option><option value="woman" data-i18n="woman">Woman</option><option value="man" data-i18n="man">Man</option></select></label>
+          <label><span data-i18n="country">Country</span><input required name="country" maxlength="80"></label>
+          <label><span data-i18n="city">City</span><input required name="city" maxlength="80"></label>
+          <label><span data-i18n="languagesLabel">Languages (comma separated)</span><input name="languages" maxlength="180" data-i18n-placeholder="languagesPlaceholder" placeholder="Tigrinya, Amharic, English"></label>
+          <label><span data-i18n="education">Education</span><input name="education" maxlength="120"></label>
+          <label><span data-i18n="faith">Faith</span><input name="faith" maxlength="100"></label>
+          <label><span data-i18n="minAge">Preferred minimum age</span><input min="18" max="100" type="number" name="preferred_age_min"></label>
+          <label><span data-i18n="maxAge">Preferred maximum age</span><input min="18" max="100" type="number" name="preferred_age_max"></label>
+          <label class="full"><span data-i18n="photo">Profile photo (JPG, PNG or WebP; max 5MB)</span><input accept="image/jpeg,image/png,image/webp" type="file" name="avatar"></label>
+          <label class="full"><span data-i18n="aboutMe">About me</span><textarea required maxlength="1200" name="bio"></textarea></label>
+          <label class="full"><span data-i18n="lookingFor">The person I hope to meet</span><textarea required maxlength="1200" name="looking_for"></textarea></label>
+          <label class="full"><input required type="checkbox" name="safety" style="width:auto"> <span data-i18n="safetyAgreement">I am 18 or older and agree to the PGN Singles safety rules.</span></label>
         </div>
-        <button id="saveProfile" class="btn primary" type="submit">Save My Profile</button>
-        <p class="privacy">Your email and login credentials are never shown on your public profile.</p>
+        <button id="saveProfile" class="btn primary" type="submit" data-i18n="saveProfile">Save My Profile</button>
+        <p class="privacy" data-i18n="credentialsPrivate">Your email and login credentials are never shown on your public profile.</p>
         <p id="formMessage" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -230,30 +230,30 @@
 
   <section id="matches" class="section-soft">
     <div class="wrap">
-      <h2 class="title">Approved Pilot Members</h2>
-      <div id="matchesMessage" class="member-status">Log in to view approved pilot profiles.</div>
+      <h2 class="title" data-i18n="approvedMembers">Approved Pilot Members</h2>
+      <div id="matchesMessage" class="member-status" data-i18n="loginToView">Log in to view approved pilot profiles.</div>
       <div id="matchesGrid" class="matches-grid"></div>
     </div>
   </section>
 
   <dialog id="authDialog">
     <div class="dialog-card">
-      <div class="dialog-head"><h2>PGN Singles Account</h2><button id="closeAuth" class="icon-btn" type="button" aria-label="Close">×</button></div>
+      <div class="dialog-head"><h2 data-i18n="accountTitle">PGN Singles Account</h2><button id="closeAuth" class="icon-btn" type="button" aria-label="Close">×</button></div>
       <div class="auth-tabs">
-        <button class="auth-tab active" data-pane="signupPane" type="button">Sign up</button>
-        <button class="auth-tab" data-pane="loginPane" type="button">Log in</button>
+        <button class="auth-tab active" data-pane="signupPane" type="button" data-i18n="signup">Sign up</button>
+        <button class="auth-tab" data-pane="loginPane" type="button" data-i18n="login">Log in</button>
       </div>
       <form id="signupPane" class="auth-pane">
-        <label>Display name<input required name="display_name" maxlength="80"></label>
-        <label>Email<input required type="email" name="email" autocomplete="email"></label>
-        <label>Password<input required type="password" name="password" minlength="8" autocomplete="new-password"></label>
-        <button class="btn primary" type="submit">Create account</button>
+        <label><span data-i18n="displayName">Display name</span><input required name="display_name" maxlength="80"></label>
+        <label><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
+        <label><span data-i18n="password">Password</span><input required type="password" name="password" minlength="8" autocomplete="new-password"></label>
+        <button class="btn primary" type="submit" data-i18n="createAccount">Create account</button>
       </form>
       <form id="loginPane" class="auth-pane" hidden>
-        <label>Email<input required type="email" name="email" autocomplete="email"></label>
-        <label>Password<input required type="password" name="password" autocomplete="current-password"></label>
-        <button class="btn primary" type="submit">Log in</button>
-        <button id="resetPassword" class="mini" type="button">Forgot password?</button>
+        <label><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
+        <label><span data-i18n="password">Password</span><input required type="password" name="password" autocomplete="current-password"></label>
+        <button class="btn primary" type="submit" data-i18n="login">Log in</button>
+        <button id="resetPassword" class="mini" type="button" data-i18n="forgotPassword">Forgot password?</button>
       </form>
       <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
     </div>
@@ -293,6 +293,8 @@ const copy = {
     paySoon: 'Secure payment — coming next',
     paymentNotice: 'Payment and member verification will be connected before public launch. Until then, contact details remain locked.',
     profileTitle: 'Create Your Profile',
+    profileHeading: 'Your PGN Profile', loginPrompt: 'Sign up or log in to create and securely save your profile.', pilotLabel: 'Private pilot:', pilotText: 'New profiles stay private until PGN administration approves them.',
+    displayName: 'Display name', age18: 'Age (18+)', country: 'Country', city: 'City', languagesLabel: 'Languages (comma separated)', languagesPlaceholder: 'Tigrinya, Amharic, English', education: 'Education', faith: 'Faith', minAge: 'Preferred minimum age', maxAge: 'Preferred maximum age', photo: 'Profile photo (JPG, PNG or WebP; max 5MB)', aboutMe: 'About me', lookingFor: 'The person I hope to meet', safetyAgreement: 'I am 18 or older and agree to the PGN Singles safety rules.', saveProfile: 'Save My Profile', credentialsPrivate: 'Your email and login credentials are never shown on your public profile.', approvedMembers: 'Approved Pilot Members', loginToView: 'Log in to view approved pilot profiles.', accountTitle: 'PGN Singles Account', signup: 'Sign up', login: 'Log in', authEmail: 'Email', password: 'Password', createAccount: 'Create account', forgotPassword: 'Forgot password?', profileApproved: 'Your profile is approved for the private pilot.', profilePrivate: 'You are logged in. Your profile remains private until PGN administration approves it.', noProfiles: 'No approved profiles are available yet.', approvedCount: 'approved pilot profile(s).',
     name: 'Full name',
     age: 'Age',
     gender: 'Gender',
@@ -333,6 +335,8 @@ const copy = {
     paySoon: 'ውሑስ ክፍሊት — ቀጺሉ ይውሰኽ',
     paymentNotice: 'ናይ ክፍሊትን ኣባልነት ምርግጋጽን ቅድሚ ህዝባዊ ምጅማር ክራኸብ እዩ። ክሳዕ ሽዑ ናይ ርክብ ሓበሬታ ዕጹው ይጸንሕ።',
     profileTitle: 'ፕሮፋይልካ ፍጠር',
+    profileHeading: 'ናይ PGN ፕሮፋይልካ', loginPrompt: 'ፕሮፋይልካ ንምፍጣርን ብውሕስነት ንምቕማጥን ተመዝገብ ወይ እቶ።', pilotLabel: 'ውልቃዊ ፈተነ፦', pilotText: 'ሓደስቲ ፕሮፋይላት ብምምሕዳር PGN ክሳዕ ዝፍቀደሎም ውልቃዊ ኮይኖም ይጸንሑ።',
+    displayName: 'መጸውዒ ስም', age18: 'ዕድመ (18+)', country: 'ሃገር', city: 'ከተማ', languagesLabel: 'ቋንቋታት (ብኮማ ፍለዮም)', languagesPlaceholder: 'ትግርኛ፣ ኣምሓርኛ፣ English', education: 'ትምህርቲ', faith: 'እምነት', minAge: 'ዝሓሸ ዝተሓተ ዕድመ', maxAge: 'ዝሓሸ ዝለዓለ ዕድመ', photo: 'ስእሊ ፕሮፋይል (JPG፣ PNG ወይ WebP፤ ክሳዕ 5MB)', aboutMe: 'ብዛዕባይ', lookingFor: 'ክረኽቦ ዝደሊ ሰብ', safetyAgreement: '18 ዓመት ወይ ልዕሊኡ እየ፣ ንሕጊ ድሕነት PGN Singles ድማ እሰማማዕ።', saveProfile: 'ፕሮፋይለይ ዓቅብ', credentialsPrivate: 'ኢመይልካን ናይ ምእታው ሓበሬታኻን ኣብ ህዝባዊ ፕሮፋይልካ ፈጺሙ ኣይረአን።', approvedMembers: 'ዝተፈቐደሎም ኣባላት ፈተነ', loginToView: 'ዝተፈቐደሎም ፕሮፋይላት ንምርኣይ እቶ።', accountTitle: 'ኣካውንት PGN Singles', signup: 'ተመዝገብ', login: 'እቶ', authEmail: 'ኢመይል', password: 'መሕለፊ ቃል', createAccount: 'ኣካውንት ፍጠር', forgotPassword: 'መሕለፊ ቃል ረሲዕካ?', profileApproved: 'ፕሮፋይልካ ንውልቃዊ ፈተነ ተፈቒዱሉ።', profilePrivate: 'ኣቲኻ ኣለኻ። ፕሮፋይልካ ብምምሕዳር PGN ክሳዕ ዝፍቀደሉ ውልቃዊ ኮይኑ ይጸንሕ።', noProfiles: 'ክርአ ዝኽእል ዝተፈቐደሉ ፕሮፋይል ገና የለን።', approvedCount: 'ዝተፈቐደሎም ፕሮፋይላት ፈተነ።',
     name: 'ምሉእ ስም',
     age: 'ዕድመ',
     gender: 'ጾታ',
@@ -373,6 +377,8 @@ const copy = {
     paySoon: 'ደህንነቱ የተጠበቀ ክፍያ — በቀጣይ',
     paymentNotice: 'የክፍያና የአባልነት ማረጋገጫ ከሕዝባዊ ምረቃ በፊት ይገናኛል። እስከዚያ ድረስ የመገናኛ መረጃ ዝግ ይሆናል።',
     profileTitle: 'መገለጫዎን ይፍጠሩ',
+    profileHeading: 'የPGN መገለጫዎ', loginPrompt: 'መገለጫዎን ለመፍጠርና በደህንነት ለማስቀመጥ ይመዝገቡ ወይም ይግቡ።', pilotLabel: 'የግል ሙከራ፦', pilotText: 'አዲስ መገለጫዎች በPGN አስተዳደር እስኪፈቀዱ ድረስ የግል ሆነው ይቆያሉ።',
+    displayName: 'መጠሪያ ስም', age18: 'ዕድሜ (18+)', country: 'ሀገር', city: 'ከተማ', languagesLabel: 'ቋንቋዎች (በኮማ ይለዩ)', languagesPlaceholder: 'ትግርኛ፣ አማርኛ፣ English', education: 'ትምህርት', faith: 'እምነት', minAge: 'የሚመረጠው ዝቅተኛ ዕድሜ', maxAge: 'የሚመረጠው ከፍተኛ ዕድሜ', photo: 'የመገለጫ ፎቶ (JPG፣ PNG ወይም WebP፤ እስከ 5MB)', aboutMe: 'ስለ እኔ', lookingFor: 'ማግኘት የምፈልገው ሰው', safetyAgreement: 'ዕድሜዬ 18 ወይም ከዚያ በላይ ነው፣ በPGN Singles የደህንነት ሕጎችም እስማማለሁ።', saveProfile: 'መገለጫዬን አስቀምጥ', credentialsPrivate: 'ኢሜይልዎና የመግቢያ መረጃዎ በይፋዊ መገለጫዎ ላይ ፈጽሞ አይታይም።', approvedMembers: 'የተፈቀደላቸው የሙከራ አባላት', loginToView: 'የተፈቀደላቸውን መገለጫዎች ለማየት ይግቡ።', accountTitle: 'የPGN Singles መለያ', signup: 'ይመዝገቡ', login: 'ይግቡ', authEmail: 'ኢሜይል', password: 'የይለፍ ቃል', createAccount: 'መለያ ይፍጠሩ', forgotPassword: 'የይለፍ ቃል ረሱ?', profileApproved: 'መገለጫዎ ለግል ሙከራው ተፈቅዷል።', profilePrivate: 'ገብተዋል። መገለጫዎ በPGN አስተዳደር እስኪፈቀድ ድረስ የግል ሆኖ ይቆያል።', noProfiles: 'ገና የተፈቀደ መገለጫ የለም።', approvedCount: 'የተፈቀዱ የሙከራ መገለጫዎች።',
     name: 'ሙሉ ስም',
     age: 'ዕድሜ',
     gender: 'ጾታ',
@@ -391,6 +397,7 @@ const copy = {
 };
 
 function setLanguage(lang) {
+  if (!copy[lang]) lang = 'en';
   document.documentElement.lang = lang;
 
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -401,6 +408,11 @@ function setLanguage(lang) {
     }
   });
 
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const value = copy[lang][el.dataset.i18nPlaceholder];
+    if (value) el.placeholder = value;
+  });
+
   document.querySelectorAll('.lang').forEach(button => {
     button.classList.toggle(
       'active',
@@ -409,6 +421,7 @@ function setLanguage(lang) {
   });
 
   localStorage.setItem('pgnLanguage', lang);
+  document.dispatchEvent(new CustomEvent('pgn:language', { detail: { lang } }));
 }
 
 document.querySelectorAll('.lang').forEach(button => {
@@ -567,28 +580,30 @@ setLanguage(
   }
 
   function updateStatus() {
+    const lang = localStorage.getItem('pgnLanguage') || 'en';
+    const words = copy[lang] || copy.en;
     if (!currentUser) {
       memberStatus.className = 'member-status';
-      memberStatus.textContent = 'Sign up or log in to create and securely save your profile.';
+      memberStatus.textContent = words.loginPrompt;
       profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
       return;
     }
     profileForm.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = false);
     memberStatus.className = 'member-status ' + (currentProfile?.pilot_approved ? 'ok' : '');
-    memberStatus.textContent = currentProfile?.pilot_approved
-      ? 'Your profile is approved for the private pilot.'
-      : 'You are logged in. Your profile remains private until PGN administration approves it.';
+    memberStatus.textContent = currentProfile?.pilot_approved ? words.profileApproved : words.profilePrivate;
   }
 
   async function loadMatches() {
+    const lang = localStorage.getItem('pgnLanguage') || 'en';
+    const words = copy[lang] || copy.en;
     const grid = document.getElementById('matchesGrid');
     grid.innerHTML = '';
-    if (!currentUser) { matchesMessage.textContent = 'Log in to view approved pilot profiles.'; return; }
+    if (!currentUser) { matchesMessage.textContent = words.loginToView; return; }
     const { data, error } = await client.from('profiles')
       .select('id,display_name,birth_date,gender,country,city,languages,education,faith,bio,looking_for,avatar_path,verified')
       .eq('active', true).eq('pilot_approved', true).neq('id', currentUser.id).limit(30);
     if (error) { matchesMessage.textContent = error.message; return; }
-    matchesMessage.textContent = data.length ? data.length + ' approved pilot profile(s).' : 'No approved profiles are available yet.';
+    matchesMessage.textContent = data.length ? data.length + ' ' + words.approvedCount : words.noProfiles;
     for (const p of data) {
       let avatarUrl = '';
       if (p.avatar_path) {
@@ -612,6 +627,11 @@ setLanguage(
       btn.disabled = true;
     }));
   }
+
+  document.addEventListener('pgn:language', () => {
+    updateStatus();
+    loadMatches();
+  });
 
   const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 
