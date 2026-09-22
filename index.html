@@ -128,7 +128,7 @@
     <div class="trust" aria-label="PGN Singles commitments">
       <span data-i18n="adults">✓ Adults 18+ only</span>
       <span data-i18n="respect">✓ Respect first</span>
-      <span data-i18n="emailOptional">✓ Email is optional</span>
+      <span data-i18n="emailOptional">✓ Sign up with email or phone</span>
     </div>
   </section>
 
@@ -188,13 +188,13 @@
                 type="button"
                 disabled
                 data-i18n="paySoon">
-          Secure payment — coming next
+          Card + Mobile Money — starts 1 November 2026
         </button>
       </div>
 
       <div class="notice" data-i18n="paymentNotice">
-        Payment and member verification will be connected before public launch.
-        Until then, contact details remain locked.
+        Card and Mobile Money payments start on 1 November 2026.
+        Until activation, contact details remain locked.
       </div>
     </div>
   </section>
@@ -245,7 +245,14 @@
       </div>
       <form id="signupPane" class="auth-pane">
         <label><span data-i18n="displayName">Display name</span><input required name="display_name" maxlength="80"></label>
-        <label><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
+        <label><span data-i18n="signupMethod">Sign up with</span>
+          <select id="signupMethod" name="signup_method">
+            <option value="email" data-i18n="emailChoice">Email</option>
+            <option value="phone" data-i18n="phoneChoice">Phone / SMS</option>
+          </select>
+        </label>
+        <label id="signupEmailRow"><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
+        <label id="signupPhoneRow" class="hidden"><span data-i18n="authPhone">Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="+250…"><small data-i18n="phonePending">Phone verification will activate after the SMS service is connected.</small></label>
         <label><span data-i18n="password">Password</span><input required type="password" name="password" minlength="8" autocomplete="new-password"></label>
         <button class="btn primary" type="submit" data-i18n="createAccount">Create account</button>
       </form>
@@ -277,7 +284,7 @@ const copy = {
     membership: 'View Membership',
     adults: '✓ Adults 18+ only',
     respect: '✓ Respect first',
-    emailOptional: '✓ Email is optional',
+    emailOptional: '✓ Sign up with email or phone',
     privacy: 'Your information will not be shown publicly until secure storage and member verification are connected.',
     howTitle: 'How PGN Singles Works',
     step1t: '1. Create a profile',
@@ -290,11 +297,11 @@ const copy = {
     trial: 'First month free after the full launch',
     sevenDays: 'for 7 days',
     rule: 'When the free launch month ends, payment is required before members can contact or connect with each other.',
-    paySoon: 'Secure payment — coming next',
-    paymentNotice: 'Payment and member verification will be connected before public launch. Until then, contact details remain locked.',
+    paySoon: 'Card + Mobile Money — starts 1 November 2026',
+    paymentNotice: 'Card and Mobile Money payments start on 1 November 2026. Until activation, contact details remain locked.',
     profileTitle: 'Create Your Profile',
     profileHeading: 'Your PGN Profile', loginPrompt: 'Sign up or log in to create and securely save your profile.', pilotLabel: 'Private pilot:', pilotText: 'New profiles stay private until PGN administration approves them.',
-    displayName: 'Display name', age18: 'Age (18+)', country: 'Country', city: 'City', languagesLabel: 'Languages (comma separated)', languagesPlaceholder: 'Tigrinya, Amharic, English', education: 'Education', faith: 'Faith', minAge: 'Preferred minimum age', maxAge: 'Preferred maximum age', photo: 'Profile photo (JPG, PNG or WebP; max 5MB)', aboutMe: 'About me', lookingFor: 'The person I hope to meet', safetyAgreement: 'I am 18 or older and agree to the PGN Singles safety rules.', saveProfile: 'Save My Profile', credentialsPrivate: 'Your email and login credentials are never shown on your public profile.', approvedMembers: 'Approved Pilot Members', loginToView: 'Log in to view approved pilot profiles.', accountTitle: 'PGN Singles Account', signup: 'Sign up', login: 'Log in', signupLogin: 'Sign up / Log in', logout: 'Log out', authEmail: 'Email', password: 'Password', createAccount: 'Create account', forgotPassword: 'Forgot password?', profileApproved: 'Your profile is approved for the private pilot.', profilePrivate: 'You are logged in. Your profile remains private until PGN administration approves it.', noProfiles: 'No approved profiles are available yet.', approvedCount: 'approved pilot profile(s).',
+    displayName: 'Display name', age18: 'Age (18+)', country: 'Country', city: 'City', languagesLabel: 'Languages (comma separated)', languagesPlaceholder: 'Tigrinya, Amharic, English', education: 'Education', faith: 'Faith', minAge: 'Preferred minimum age', maxAge: 'Preferred maximum age', photo: 'Profile photo (JPG, PNG or WebP; max 5MB)', aboutMe: 'About me', lookingFor: 'The person I hope to meet', safetyAgreement: 'I am 18 or older and agree to the PGN Singles safety rules.', saveProfile: 'Save My Profile', credentialsPrivate: 'Your email or phone and login credentials are never shown on your public profile.', approvedMembers: 'Approved Pilot Members', loginToView: 'Log in to view approved pilot profiles.', accountTitle: 'PGN Singles Account', signup: 'Sign up', login: 'Log in', signupLogin: 'Sign up / Log in', logout: 'Log out', signupMethod: 'Sign up with', emailChoice: 'Email', phoneChoice: 'Phone / SMS', authEmail: 'Email', authPhone: 'Phone number', phonePending: 'Phone verification will activate after the SMS service is connected.', password: 'Password', createAccount: 'Create account', forgotPassword: 'Forgot password?', profileApproved: 'Your profile is approved for the private pilot.', profilePrivate: 'You are logged in. Your profile remains private until PGN administration approves it.', noProfiles: 'No approved profiles are available yet.', approvedCount: 'approved pilot profile(s).',
     name: 'Full name',
     age: 'Age',
     gender: 'Gender',
@@ -319,7 +326,7 @@ const copy = {
     membership: 'ኣባልነት ርአ',
     adults: '✓ ን18 ዓመትን ልዕሊኡን ጥራይ',
     respect: '✓ ቅድሚ ኩሉ ክብሪ',
-    emailOptional: '✓ ኢመይል ኣማራጺ እዩ',
+    emailOptional: '✓ ብኢመይል ወይ ብተለፎን ተመዝገብ',
     privacy: 'ውሑስ ምዕቃብን ምርግጋጽ ኣባልነትን ክሳዕ ዝራኸብ፣ ሓበሬታኻ ንህዝቢ ኣይረአን።',
     howTitle: 'PGN Singles ከመይ ይሰርሕ?',
     step1t: '1. ፕሮፋይል ፍጠር',
@@ -332,11 +339,12 @@ const copy = {
     trial: 'ካብ ምሉእ ምጅማሩ ቀዳማይ ወርሒ ብነጻ',
     sevenDays: 'ን7 መዓልቲ',
     rule: 'እቲ ነጻ ወርሒ ምስ ተወድአ፣ ኣባላት ቅድሚ ምርኻቦም ክፍሊት ክፍጽሙ ኣለዎም።',
-    paySoon: 'ውሑስ ክፍሊት — ቀጺሉ ይውሰኽ',
-    paymentNotice: 'ናይ ክፍሊትን ኣባልነት ምርግጋጽን ቅድሚ ህዝባዊ ምጅማር ክራኸብ እዩ። ክሳዕ ሽዑ ናይ ርክብ ሓበሬታ ዕጹው ይጸንሕ።',
+    paySoon: 'Card + Mobile Money — 1 ኖቨምበር 2026 ይጅምር',
+    paymentNotice: 'ክፍሊት Cardን Mobile Moneyን 1 ኖቨምበር 2026 ይጅምር። ክሳዕ ዝንቀሳቐስ ናይ ርክብ ሓበሬታ ዕጹው ይጸንሕ።',
     profileTitle: 'ፕሮፋይልካ ፍጠር',
     profileHeading: 'ናይ PGN ፕሮፋይልካ', loginPrompt: 'ፕሮፋይልካ ንምፍጣርን ብውሕስነት ንምቕማጥን ተመዝገብ ወይ እቶ።', pilotLabel: 'ውልቃዊ ፈተነ፦', pilotText: 'ሓደስቲ ፕሮፋይላት ብምምሕዳር PGN ክሳዕ ዝፍቀደሎም ውልቃዊ ኮይኖም ይጸንሑ።',
     displayName: 'መጸውዒ ስም', age18: 'ዕድመ (18+)', country: 'ሃገር', city: 'ከተማ', languagesLabel: 'ቋንቋታት (ብኮማ ፍለዮም)', languagesPlaceholder: 'ትግርኛ፣ ኣምሓርኛ፣ English', education: 'ትምህርቲ', faith: 'እምነት', minAge: 'ዝሓሸ ዝተሓተ ዕድመ', maxAge: 'ዝሓሸ ዝለዓለ ዕድመ', photo: 'ስእሊ ፕሮፋይል (JPG፣ PNG ወይ WebP፤ ክሳዕ 5MB)', aboutMe: 'ብዛዕባይ', lookingFor: 'ክረኽቦ ዝደሊ ሰብ', safetyAgreement: '18 ዓመት ወይ ልዕሊኡ እየ፣ ንሕጊ ድሕነት PGN Singles ድማ እሰማማዕ።', saveProfile: 'ፕሮፋይለይ ዓቅብ', credentialsPrivate: 'ኢመይልካን ናይ ምእታው ሓበሬታኻን ኣብ ህዝባዊ ፕሮፋይልካ ፈጺሙ ኣይረአን።', approvedMembers: 'ዝተፈቐደሎም ኣባላት ፈተነ', loginToView: 'ዝተፈቐደሎም ፕሮፋይላት ንምርኣይ እቶ።', accountTitle: 'ኣካውንት PGN Singles', signup: 'ተመዝገብ', login: 'እቶ', signupLogin: 'ተመዝገብ / እቶ', logout: 'ውጻእ', authEmail: 'ኢመይል', password: 'መሕለፊ ቃል', createAccount: 'ኣካውንት ፍጠር', forgotPassword: 'መሕለፊ ቃል ረሲዕካ?', profileApproved: 'ፕሮፋይልካ ንውልቃዊ ፈተነ ተፈቒዱሉ።', profilePrivate: 'ኣቲኻ ኣለኻ። ፕሮፋይልካ ብምምሕዳር PGN ክሳዕ ዝፍቀደሉ ውልቃዊ ኮይኑ ይጸንሕ።', noProfiles: 'ክርአ ዝኽእል ዝተፈቐደሉ ፕሮፋይል ገና የለን።', approvedCount: 'ዝተፈቐደሎም ፕሮፋይላት ፈተነ።',
+    signupMethod: 'ብምንታይ ትምዝገብ?', emailChoice: 'ኢመይል', phoneChoice: 'ተለፎን / SMS', authPhone: 'ቁጽሪ ተለፎን', phonePending: 'ናይ SMS ኣገልግሎት ምስተኣሳሰረ Phone verification ክንቀሳቐስ እዩ።',
     name: 'ምሉእ ስም',
     age: 'ዕድመ',
     gender: 'ጾታ',
@@ -361,7 +369,7 @@ const copy = {
     membership: 'አባልነትን ይመልከቱ',
     adults: '✓ ለ18 ዓመትና ከዚያ በላይ ብቻ',
     respect: '✓ ክብር ቀዳሚ ነው',
-    emailOptional: '✓ ኢሜይል አማራጭ ነው',
+    emailOptional: '✓ በኢሜይል ወይም በስልክ ይመዝገቡ',
     privacy: 'ደህንነቱ የተጠበቀ ማከማቻና የአባልነት ማረጋገጫ እስኪገናኝ ድረስ መረጃዎ በይፋ አይታይም።',
     howTitle: 'PGN Singles እንዴት ይሰራል?',
     step1t: '1. መገለጫ ይፍጠሩ',
@@ -374,11 +382,12 @@ const copy = {
     trial: 'ሙሉ በሙሉ ከተጀመረ በኋላ የመጀመሪያው ወር በነጻ',
     sevenDays: 'ለ7 ቀናት',
     rule: 'የነጻው ወር ሲያልቅ፣ አባላት ከመገናኘታቸው በፊት ክፍያ መፈጸም አለባቸው።',
-    paySoon: 'ደህንነቱ የተጠበቀ ክፍያ — በቀጣይ',
-    paymentNotice: 'የክፍያና የአባልነት ማረጋገጫ ከሕዝባዊ ምረቃ በፊት ይገናኛል። እስከዚያ ድረስ የመገናኛ መረጃ ዝግ ይሆናል።',
+    paySoon: 'Card + Mobile Money — ኖቬምበር 1 2026 ይጀምራል',
+    paymentNotice: 'የCardና Mobile Money ክፍያ ኖቬምበር 1 2026 ይጀምራል። እስኪነቃ ድረስ የመገናኛ መረጃ ዝግ ይሆናል።',
     profileTitle: 'መገለጫዎን ይፍጠሩ',
     profileHeading: 'የPGN መገለጫዎ', loginPrompt: 'መገለጫዎን ለመፍጠርና በደህንነት ለማስቀመጥ ይመዝገቡ ወይም ይግቡ።', pilotLabel: 'የግል ሙከራ፦', pilotText: 'አዲስ መገለጫዎች በPGN አስተዳደር እስኪፈቀዱ ድረስ የግል ሆነው ይቆያሉ።',
     displayName: 'መጠሪያ ስም', age18: 'ዕድሜ (18+)', country: 'ሀገር', city: 'ከተማ', languagesLabel: 'ቋንቋዎች (በኮማ ይለዩ)', languagesPlaceholder: 'ትግርኛ፣ አማርኛ፣ English', education: 'ትምህርት', faith: 'እምነት', minAge: 'የሚመረጠው ዝቅተኛ ዕድሜ', maxAge: 'የሚመረጠው ከፍተኛ ዕድሜ', photo: 'የመገለጫ ፎቶ (JPG፣ PNG ወይም WebP፤ እስከ 5MB)', aboutMe: 'ስለ እኔ', lookingFor: 'ማግኘት የምፈልገው ሰው', safetyAgreement: 'ዕድሜዬ 18 ወይም ከዚያ በላይ ነው፣ በPGN Singles የደህንነት ሕጎችም እስማማለሁ።', saveProfile: 'መገለጫዬን አስቀምጥ', credentialsPrivate: 'ኢሜይልዎና የመግቢያ መረጃዎ በይፋዊ መገለጫዎ ላይ ፈጽሞ አይታይም።', approvedMembers: 'የተፈቀደላቸው የሙከራ አባላት', loginToView: 'የተፈቀደላቸውን መገለጫዎች ለማየት ይግቡ።', accountTitle: 'የPGN Singles መለያ', signup: 'ይመዝገቡ', login: 'ይግቡ', signupLogin: 'ይመዝገቡ / ይግቡ', logout: 'ይውጡ', authEmail: 'ኢሜይል', password: 'የይለፍ ቃል', createAccount: 'መለያ ይፍጠሩ', forgotPassword: 'የይለፍ ቃል ረሱ?', profileApproved: 'መገለጫዎ ለግል ሙከራው ተፈቅዷል።', profilePrivate: 'ገብተዋል። መገለጫዎ በPGN አስተዳደር እስኪፈቀድ ድረስ የግል ሆኖ ይቆያል።', noProfiles: 'ገና የተፈቀደ መገለጫ የለም።', approvedCount: 'የተፈቀዱ የሙከራ መገለጫዎች።',
+    signupMethod: 'በምን ይመዝገቡ?', emailChoice: 'ኢሜይል', phoneChoice: 'ስልክ / SMS', authPhone: 'ስልክ ቁጥር', phonePending: 'የSMS አገልግሎት ከተገናኘ በኋላ የስልክ ማረጋገጫ ይነቃል።',
     name: 'ሙሉ ስም',
     age: 'ዕድሜ',
     gender: 'ጾታ',
@@ -448,6 +457,7 @@ setLanguage(
   const profileForm = document.getElementById('profileForm');
   const openAuth = document.getElementById('openAuth');
   const logoutBtn = document.getElementById('logoutBtn');
+  const ADMIN_EMAIL = 'pgnhelp@gmail.com';
   let currentUser = null;
   let currentProfile = null;
 
@@ -469,14 +479,26 @@ setLanguage(
     });
   });
 
+  const signupMethod = document.getElementById('signupMethod');
+  signupMethod.addEventListener('change', () => {
+    const usePhone = signupMethod.value === 'phone';
+    document.getElementById('signupEmailRow').classList.toggle('hidden', usePhone);
+    document.getElementById('signupPhoneRow').classList.toggle('hidden', !usePhone);
+    document.querySelector('#signupPane [name="email"]').required = !usePhone;
+    document.querySelector('#signupPane [name="phone"]').required = usePhone;
+  });
+
   document.getElementById('signupPane').addEventListener('submit', async e => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+    if (data.get('signup_method') === 'phone') {
+      return message(authMessage, 'Phone/SMS verification is prepared but cannot activate until PGN connects an SMS provider. Please use email for now.');
+    }
     message(authMessage, 'Creating your secure account…', true);
     const { error } = await client.auth.signUp({
       email: data.get('email'),
       password: data.get('password'),
-      options: { data: { display_name: data.get('display_name') } }
+      options: { data: { display_name: data.get('display_name'), requested_admin: String(data.get('email')).toLowerCase() === ADMIN_EMAIL } }
     });
     if (error) return message(authMessage, error.message);
     message(authMessage, 'Account created. Check your email to confirm your address, then log in.', true);
