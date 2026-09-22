@@ -74,6 +74,13 @@
     .auth-pane[hidden]{display:none}
     .auth-message{min-height:24px;margin:12px 0 0;color:#9b1c31;font-weight:700}
     .pilot-note{max-width:780px;margin:0 auto 22px;padding:14px 16px;border-left:5px solid var(--gold);background:#fff;border-radius:10px}
+    .share-card{max-width:780px;margin:24px auto 0;padding:24px;background:#fff;border:1px solid #dce7f2;border-radius:18px;box-shadow:0 10px 30px #17355712;text-align:center}
+    .share-card h3{margin:0 0 8px;color:var(--blue);font-size:1.35rem}
+    .share-card p{margin:0 auto 16px;max-width:620px;color:#42526b}
+    .share-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    .share-actions .btn{padding:11px 16px}
+    .share-note{font-size:.9rem;color:#52627a;margin:14px auto 0}
+    .share-feedback{min-height:24px;margin:12px 0 0;font-weight:700;color:#17653a}
     .hidden{display:none!important}
     textarea{min-height:110px}
     .full{grid-column:1/-1}
@@ -225,6 +232,21 @@
         <p class="privacy" data-i18n="credentialsPrivate">Your email and login credentials are never shown on your public profile.</p>
         <p id="formMessage" role="status" aria-live="polite"></p>
       </form>
+      <aside id="sharePgn" class="share-card hidden" aria-labelledby="shareTitle">
+        <h3 id="shareTitle" data-i18n="shareTitle">Help PGN Grow</h3>
+        <p data-i18n="shareText">Invite single friends and family to join PGN Singles by sharing this link.</p>
+        <div class="share-actions">
+          <button id="sharePgnBtn" class="btn primary" type="button" data-i18n="moreApps">More Apps</button>
+          <button id="copyPgnBtn" class="btn secondary" type="button" data-i18n="copyLink">Copy Link</button>
+          <a id="whatsappPgnBtn" class="btn secondary" target="_blank" rel="noopener" data-i18n="shareWhatsApp">Share on WhatsApp</a>
+          <a id="facebookPgnBtn" class="btn secondary" target="_blank" rel="noopener">Facebook</a>
+          <a id="telegramPgnBtn" class="btn secondary" target="_blank" rel="noopener">Telegram</a>
+          <a id="xPgnBtn" class="btn secondary" target="_blank" rel="noopener">X</a>
+          <a id="emailPgnBtn" class="btn secondary" data-i18n="shareEmail">Email</a>
+        </div>
+        <p class="share-note" data-i18n="shareNote">Use More Apps to share through Instagram, TikTok, YouTube and any other app installed on your phone.</p>
+        <p id="shareFeedback" class="share-feedback" role="status" aria-live="polite"></p>
+      </aside>
     </div>
   </section>
 
@@ -302,6 +324,7 @@ const copy = {
     profileTitle: 'Create Your Profile',
     profileHeading: 'Your PGN Profile', loginPrompt: 'Sign up or log in to create and securely save your profile.', pilotLabel: 'Private pilot:', pilotText: 'New profiles stay private until PGN administration approves them.',
     displayName: 'Display name', age18: 'Age (18+)', country: 'Country', city: 'City', languagesLabel: 'Languages (comma separated)', languagesPlaceholder: 'Tigrinya, Amharic, English', education: 'Education', faith: 'Faith', minAge: 'Preferred minimum age', maxAge: 'Preferred maximum age', photo: 'Profile photo (JPG, PNG or WebP; max 5MB)', aboutMe: 'About me', lookingFor: 'The person I hope to meet', safetyAgreement: 'I am 18 or older and agree to the PGN Singles safety rules.', saveProfile: 'Save My Profile', credentialsPrivate: 'Your email or phone and login credentials are never shown on your public profile.', approvedMembers: 'Approved Pilot Members', loginToView: 'Log in to view approved pilot profiles.', accountTitle: 'PGN Singles Account', signup: 'Sign up', login: 'Log in', signupLogin: 'Sign up / Log in', logout: 'Log out', signupMethod: 'Sign up with', emailChoice: 'Email', phoneChoice: 'Phone / SMS', authEmail: 'Email', authPhone: 'Phone number', phonePending: 'Phone verification will activate after the SMS service is connected.', password: 'Password', createAccount: 'Create account', forgotPassword: 'Forgot password?', profileApproved: 'Your profile is approved for the private pilot.', profilePrivate: 'You are logged in. Your profile remains private until PGN administration approves it.', noProfiles: 'No approved profiles are available yet.', approvedCount: 'approved pilot profile(s).',
+    shareTitle: 'Help PGN Grow', shareText: 'Invite single friends and family to join PGN Singles by sharing this link.', shareButton: 'Share PGN', moreApps: 'More Apps', copyLink: 'Copy Link', shareWhatsApp: 'WhatsApp', shareEmail: 'Email', shareNote: 'Use More Apps to share through Instagram, TikTok, YouTube and any other app installed on your phone.', copied: 'PGN link copied!',
     name: 'Full name',
     age: 'Age',
     gender: 'Gender',
@@ -344,6 +367,7 @@ const copy = {
     profileTitle: 'ፕሮፋይልካ ፍጠር',
     profileHeading: 'ናይ PGN ፕሮፋይልካ', loginPrompt: 'ፕሮፋይልካ ንምፍጣርን ብውሕስነት ንምቕማጥን ተመዝገብ ወይ እቶ።', pilotLabel: 'ውልቃዊ ፈተነ፦', pilotText: 'ሓደስቲ ፕሮፋይላት ብምምሕዳር PGN ክሳዕ ዝፍቀደሎም ውልቃዊ ኮይኖም ይጸንሑ።',
     displayName: 'መጸውዒ ስም', age18: 'ዕድመ (18+)', country: 'ሃገር', city: 'ከተማ', languagesLabel: 'ቋንቋታት (ብኮማ ፍለዮም)', languagesPlaceholder: 'ትግርኛ፣ ኣምሓርኛ፣ English', education: 'ትምህርቲ', faith: 'እምነት', minAge: 'ዝሓሸ ዝተሓተ ዕድመ', maxAge: 'ዝሓሸ ዝለዓለ ዕድመ', photo: 'ስእሊ ፕሮፋይል (JPG፣ PNG ወይ WebP፤ ክሳዕ 5MB)', aboutMe: 'ብዛዕባይ', lookingFor: 'ክረኽቦ ዝደሊ ሰብ', safetyAgreement: '18 ዓመት ወይ ልዕሊኡ እየ፣ ንሕጊ ድሕነት PGN Singles ድማ እሰማማዕ።', saveProfile: 'ፕሮፋይለይ ዓቅብ', credentialsPrivate: 'ኢመይልካን ናይ ምእታው ሓበሬታኻን ኣብ ህዝባዊ ፕሮፋይልካ ፈጺሙ ኣይረአን።', approvedMembers: 'ዝተፈቐደሎም ኣባላት ፈተነ', loginToView: 'ዝተፈቐደሎም ፕሮፋይላት ንምርኣይ እቶ።', accountTitle: 'ኣካውንት PGN Singles', signup: 'ተመዝገብ', login: 'እቶ', signupLogin: 'ተመዝገብ / እቶ', logout: 'ውጻእ', authEmail: 'ኢመይል', password: 'መሕለፊ ቃል', createAccount: 'ኣካውንት ፍጠር', forgotPassword: 'መሕለፊ ቃል ረሲዕካ?', profileApproved: 'ፕሮፋይልካ ንውልቃዊ ፈተነ ተፈቒዱሉ።', profilePrivate: 'ኣቲኻ ኣለኻ። ፕሮፋይልካ ብምምሕዳር PGN ክሳዕ ዝፍቀደሉ ውልቃዊ ኮይኑ ይጸንሕ።', noProfiles: 'ክርአ ዝኽእል ዝተፈቐደሉ ፕሮፋይል ገና የለን።', approvedCount: 'ዝተፈቐደሎም ፕሮፋይላት ፈተነ።',
+    shareTitle: 'PGN ንኽዓቢ ይሓግዙ', shareText: 'ነዚ ሊንክ ንዘይተመርዓዉ ኣዕሩኽትኹምን ቤተሰብኩምን ኣካፍሉ።', shareButton: 'PGN ኣካፍል', moreApps: 'ካልኦት Apps', copyLink: 'ሊንክ ቅዳሕ', shareWhatsApp: 'WhatsApp', shareEmail: 'ኢመይል', shareNote: 'ናብ Instagram፣ TikTok፣ YouTubeን ኣብ ስልክኹም ዘሎ ካልእ Appን ንምክፋል “ካልኦት Apps” ጠውቑ።', copied: 'ሊንክ PGN ተቐዲሑ!',
     signupMethod: 'ብምንታይ ትምዝገብ?', emailChoice: 'ኢመይል', phoneChoice: 'ተለፎን / SMS', authPhone: 'ቁጽሪ ተለፎን', phonePending: 'ናይ SMS ኣገልግሎት ምስተኣሳሰረ Phone verification ክንቀሳቐስ እዩ።',
     name: 'ምሉእ ስም',
     age: 'ዕድመ',
@@ -387,6 +411,7 @@ const copy = {
     profileTitle: 'መገለጫዎን ይፍጠሩ',
     profileHeading: 'የPGN መገለጫዎ', loginPrompt: 'መገለጫዎን ለመፍጠርና በደህንነት ለማስቀመጥ ይመዝገቡ ወይም ይግቡ።', pilotLabel: 'የግል ሙከራ፦', pilotText: 'አዲስ መገለጫዎች በPGN አስተዳደር እስኪፈቀዱ ድረስ የግል ሆነው ይቆያሉ።',
     displayName: 'መጠሪያ ስም', age18: 'ዕድሜ (18+)', country: 'ሀገር', city: 'ከተማ', languagesLabel: 'ቋንቋዎች (በኮማ ይለዩ)', languagesPlaceholder: 'ትግርኛ፣ አማርኛ፣ English', education: 'ትምህርት', faith: 'እምነት', minAge: 'የሚመረጠው ዝቅተኛ ዕድሜ', maxAge: 'የሚመረጠው ከፍተኛ ዕድሜ', photo: 'የመገለጫ ፎቶ (JPG፣ PNG ወይም WebP፤ እስከ 5MB)', aboutMe: 'ስለ እኔ', lookingFor: 'ማግኘት የምፈልገው ሰው', safetyAgreement: 'ዕድሜዬ 18 ወይም ከዚያ በላይ ነው፣ በPGN Singles የደህንነት ሕጎችም እስማማለሁ።', saveProfile: 'መገለጫዬን አስቀምጥ', credentialsPrivate: 'ኢሜይልዎና የመግቢያ መረጃዎ በይፋዊ መገለጫዎ ላይ ፈጽሞ አይታይም።', approvedMembers: 'የተፈቀደላቸው የሙከራ አባላት', loginToView: 'የተፈቀደላቸውን መገለጫዎች ለማየት ይግቡ።', accountTitle: 'የPGN Singles መለያ', signup: 'ይመዝገቡ', login: 'ይግቡ', signupLogin: 'ይመዝገቡ / ይግቡ', logout: 'ይውጡ', authEmail: 'ኢሜይል', password: 'የይለፍ ቃል', createAccount: 'መለያ ይፍጠሩ', forgotPassword: 'የይለፍ ቃል ረሱ?', profileApproved: 'መገለጫዎ ለግል ሙከራው ተፈቅዷል።', profilePrivate: 'ገብተዋል። መገለጫዎ በPGN አስተዳደር እስኪፈቀድ ድረስ የግል ሆኖ ይቆያል።', noProfiles: 'ገና የተፈቀደ መገለጫ የለም።', approvedCount: 'የተፈቀዱ የሙከራ መገለጫዎች።',
+    shareTitle: 'PGN እንዲያድግ ይርዱ', shareText: 'ይህን ሊንክ ላላገቡ ጓደኞችና ቤተሰቦች በማጋራት ወደ PGN Singles ይጋብዙ።', shareButton: 'PGN አጋራ', moreApps: 'ሌሎች Apps', copyLink: 'ሊንክ ቅዳ', shareWhatsApp: 'WhatsApp', shareEmail: 'ኢሜይል', shareNote: 'በInstagram፣ TikTok፣ YouTubeና በስልክዎ በተጫኑ ሌሎች Apps ለማጋራት “ሌሎች Apps” ይጫኑ።', copied: 'የPGN ሊንክ ተቀድቷል!',
     signupMethod: 'በምን ይመዝገቡ?', emailChoice: 'ኢሜይል', phoneChoice: 'ስልክ / SMS', authPhone: 'ስልክ ቁጥር', phonePending: 'የSMS አገልግሎት ከተገናኘ በኋላ የስልክ ማረጋገጫ ይነቃል።',
     name: 'ሙሉ ስም',
     age: 'ዕድሜ',
@@ -458,6 +483,9 @@ setLanguage(
   const profileForm = document.getElementById('profileForm');
   const openAuth = document.getElementById('openAuth');
   const logoutBtn = document.getElementById('logoutBtn');
+  const sharePgn = document.getElementById('sharePgn');
+  const shareFeedback = document.getElementById('shareFeedback');
+  const PGN_LINK = 'https://steve4help.github.io/';
   const ADMIN_EMAIL = 'pgnhelp@gmail.com';
   let currentUser = null;
   let currentProfile = null;
@@ -529,6 +557,38 @@ setLanguage(
     await client.auth.signOut();
     await refreshSession();
   });
+
+  const shareMessage = () => {
+    const lang = localStorage.getItem('pgnLanguage') || 'en';
+    const words = copy[lang] || copy.en;
+    return words.shareText + ' ' + PGN_LINK;
+  };
+
+  document.getElementById('sharePgnBtn').addEventListener('click', async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: 'PGN Singles', text: shareMessage(), url: PGN_LINK }); } catch (error) { if (error.name !== 'AbortError') shareFeedback.textContent = error.message; }
+    } else {
+      await navigator.clipboard.writeText(PGN_LINK);
+      const lang = localStorage.getItem('pgnLanguage') || 'en';
+      shareFeedback.textContent = (copy[lang] || copy.en).copied;
+    }
+  });
+
+  document.getElementById('copyPgnBtn').addEventListener('click', async () => {
+    await navigator.clipboard.writeText(PGN_LINK);
+    const lang = localStorage.getItem('pgnLanguage') || 'en';
+    shareFeedback.textContent = (copy[lang] || copy.en).copied;
+  });
+
+  function updateShareLink() {
+    const message = shareMessage();
+    document.getElementById('whatsappPgnBtn').href = 'https://wa.me/?text=' + encodeURIComponent(message);
+    document.getElementById('facebookPgnBtn').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(PGN_LINK);
+    document.getElementById('telegramPgnBtn').href = 'https://t.me/share/url?url=' + encodeURIComponent(PGN_LINK) + '&text=' + encodeURIComponent(message);
+    document.getElementById('xPgnBtn').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(message);
+    document.getElementById('emailPgnBtn').href = 'mailto:?subject=' + encodeURIComponent('PGN Singles') + '&body=' + encodeURIComponent(message);
+    shareFeedback.textContent = '';
+  }
 
   profileForm.addEventListener('submit', async e => {
     e.preventDefault();
@@ -644,6 +704,7 @@ setLanguage(
 
   document.addEventListener('pgn:language', () => {
     updateStatus();
+    updateShareLink();
     loadMatches();
   });
 
@@ -654,6 +715,7 @@ setLanguage(
     currentUser = data.session?.user || null;
     openAuth.classList.toggle('hidden', !!currentUser);
     logoutBtn.classList.toggle('hidden', !currentUser);
+    sharePgn.classList.toggle('hidden', !currentUser);
     currentProfile = null;
     if (currentUser) await loadProfile();
     updateStatus();
@@ -661,6 +723,7 @@ setLanguage(
   }
 
   client.auth.onAuthStateChange(() => setTimeout(refreshSession, 0));
+  updateShareLink();
   refreshSession();
 })();
 </script>
