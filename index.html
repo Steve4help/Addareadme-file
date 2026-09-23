@@ -831,7 +831,53 @@ setLanguage(
   document.getElementById('pgnReportForm').addEventListener('submit',async e=>{e.preventDefault();if(!pgnUser)return;const d=new FormData(e.currentTarget),st=document.getElementById('pgnReportStatus');setStatus(st,'Submitting…',true);const r=await pgnClient.from('reports').insert({reporter_id:pgnUser.id,reported_id:d.get('reported_id'),reason:d.get('reason'),details:String(d.get('details')||'').trim()});if(r.error)return setStatus(st,r.error.message);setStatus(st,'Report submitted privately for review.',true);});
 
   async function loadInbox(){const st=document.getElementById('pgnInboxStatus'),list=document.getElementById('pgnInbox');list.innerHTML='';if(!pgnUser){translateExtra();return;}const r=await pgnClient.from('messages').select('id,sender_id,receiver_id,body,created_at').or('sender_id.eq.'+pgnUser.id+',receiver_id.eq.'+pgnUser.id).order('created_at',{ascending:false}).limit(30);if(r.error){st.textContent=r.error.message;return;}st.textContent=r.data.length?r.data.length+' recent message(s).':'No messages yet.';r.data.forEach(m=>{const x=document.createElement('div');x.className='pgn-item';x.innerHTML='<strong>'+(m.sender_id===pgnUser.id?'Sent':'Received')+'</strong><p>'+esc(m.body)+'</p><small>'+new Date(m.created_at).toLocaleString()+'</small>';list.appendChild(x);});}
-  async function loadAdmin(){const card=document.getElementById('pgnAdminCard');if(!pgnUser){card.classList.add('hidden');return;}const a=await pgnClient.from('admin_users').select('user_id').eq('user_id',pgnUser.id).maybeSingle();card.classList.toggle('hidden',!a.data);if(!a.data)return;const st=document.getElementById('pgnAdminStatus'),list=document.getElementById('pgnAdminList');const r=await pgnClient.from('profiles').select('id,display_name,country,city').eq('pilot_approved',false).limit(50);if(r.error){st.textContent=r.error.message;return;}st.textContent=r.data.length?r.data.length+' awaiting review.':'No profiles awaiting review.';list.innerHTML='';r.data.forEach(p=>{const x=document.createElement('div');x.className='pgn-item';x.innerHTML='<strong>'+esc(p.display_name||'Unnamed')+'</strong><p>'+esc([p.city,p.country].filter(Boolean).join(', '))+'</p><button class="mini pgn-approve" data-id="'+p.id+'" type="button">Approve pilot profile</button>';list.appendChild(x);});document.querySelectorAll('.pgn-approve').forEach(b=>b.onclick=async()=>{const r=await pgnClient.from('profiles').update({pilot_approved:true}).eq('id',b.dataset.id);b.textContent=r.error?'Approval failed':'Approved ✓';b.disabled=!r.error;});}
+  async function loadAdmin(){
+    const card=document.getElementById('pgnAdminCard');
+    if(!pgnUser){card.classList.add('hidden');return;}
+    const a=await pgnClient.from('admin_users').select('user_id').eq('user_id',pgnUser.id).maybeSingle();
+    card.classList.toggle('hidden',!a.data);
+    if(!a.data)return;
+
+    const st=document.getElementById('pgnAdminStatus'),list=document.getElementById('pgnAdminList');
+    const r=await pgnClient.from('profiles')
+      .select('id,display_name,country,city,avatar_path,pilot_approved,active,verified')
+      .order('pilot_approved',{ascending:true})
+      .limit(100);
+    if(r.error){st.textContent=r.error.message;return;}
+
+    const waiting=r.data.filter(p=>!p.pilot_approved).length;
+    st.textContent=r.data.length
+      ? r.data.length+' total profile(s) · '+waiting+' awaiting review.'
+      : 'No profiles have been created yet.';
+    list.innerHTML='';
+
+    for(const p of r.data){
+      let avatarUrl='';
+      if(p.avatar_path){
+        const signed=await pgnClient.storage.from('avatars').createSignedUrl(p.avatar_path,3600);
+        avatarUrl=signed.data?.signedUrl||'';
+      }
+      const x=document.createElement('div');
+      x.className='pgn-item';
+      x.innerHTML=(avatarUrl
+        ? '<img class="match-avatar" alt="Profile photo of '+esc(p.display_name||'member')+'" src="'+avatarUrl+'">'
+        : '<div class="match-avatar" aria-label="No profile photo"></div>')+
+        '<strong>'+esc(p.display_name||'Unnamed')+(p.verified?' ✓':'')+'</strong>'+
+        '<p>'+esc([p.city,p.country].filter(Boolean).join(', '))+'</p>'+
+        '<p><small>'+(p.pilot_approved?'Approved profile':'Awaiting approval')+(p.active===false?' · Inactive':'')+'</small></p>'+
+        (p.pilot_approved
+          ? '<button class="mini" type="button" disabled>Approved ✓</button>'
+          : '<button class="mini pgn-approve" data-id="'+p.id+'" type="button">Approve pilot profile</button>');
+      list.appendChild(x);
+    }
+
+    document.querySelectorAll('.pgn-approve').forEach(b=>b.onclick=async()=>{
+      const result=await pgnClient.from('profiles').update({pilot_approved:true}).eq('id',b.dataset.id);
+      b.textContent=result.error?'Approval failed':'Approved ✓';
+      b.disabled=!result.error;
+      if(!result.error)loadAdmin();
+    });
+  }
   async function refreshExtra(){const s=await pgnClient.auth.getSession();pgnUser=s.data.session?.user||null;await loadInbox();await loadAdmin();enhanceCards();}
   pgnClient.auth.onAuthStateChange(()=>setTimeout(refreshExtra,0));refreshExtra();
 })();
