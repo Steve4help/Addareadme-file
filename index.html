@@ -274,12 +274,19 @@
           </select>
         </label>
         <label id="signupEmailRow"><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
-        <label id="signupPhoneRow" class="hidden"><span data-i18n="authPhone">Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="+250…"><small data-i18n="phonePending">Phone verification will activate after the SMS service is connected.</small></label>
+        <label id="signupPhoneRow" class="hidden"><span data-i18n="authPhone">Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="+250…"><small data-i18n="phonePending">Use your phone number to join directly. No SMS code is required.</small></label>
         <label><span data-i18n="password">Password</span><input required type="password" name="password" minlength="8" autocomplete="new-password"></label>
         <button class="btn primary" type="submit" data-i18n="createAccount">Create account</button>
       </form>
       <form id="loginPane" class="auth-pane" hidden>
-        <label><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
+        <label><span data-i18n="loginMethod">Log in with</span>
+          <select id="loginMethod" name="login_method">
+            <option value="email" data-i18n="emailChoice">Email</option>
+            <option value="phone" data-i18n="phoneChoice">Phone</option>
+          </select>
+        </label>
+        <label id="loginEmailRow"><span data-i18n="authEmail">Email</span><input required type="email" name="email" autocomplete="email"></label>
+        <label id="loginPhoneRow" class="hidden"><span data-i18n="authPhone">Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="+250…"></label>
         <label><span data-i18n="password">Password</span><input required type="password" name="password" autocomplete="current-password"></label>
         <button class="btn primary" type="submit" data-i18n="login">Log in</button>
         <button id="resetPassword" class="mini" type="button" data-i18n="forgotPassword">Forgot password?</button>
@@ -323,7 +330,7 @@ const copy = {
     paymentNotice: 'Card and Mobile Money payments start on 1 November 2026. Until activation, contact details remain locked.',
     profileTitle: 'Create Your Profile',
     profileHeading: 'Your PGN Profile', loginPrompt: 'Sign up or log in to create and securely save your profile.', pilotLabel: 'Private pilot:', pilotText: 'New profiles stay private until PGN administration approves them.',
-    displayName: 'Display name', age18: 'Age (18+)', country: 'Country', city: 'City', languagesLabel: 'Languages (comma separated)', languagesPlaceholder: 'Tigrinya, Amharic, English', education: 'Education', faith: 'Faith', minAge: 'Preferred minimum age', maxAge: 'Preferred maximum age', photo: 'Profile photo (JPG, PNG or WebP; max 5MB)', aboutMe: 'About me', lookingFor: 'The person I hope to meet', safetyAgreement: 'I am 18 or older and agree to the PGN Singles safety rules.', saveProfile: 'Save My Profile', credentialsPrivate: 'Your email or phone and login credentials are never shown on your public profile.', approvedMembers: 'Approved Pilot Members', loginToView: 'Log in to view approved pilot profiles.', accountTitle: 'PGN Singles Account', signup: 'Sign up', login: 'Log in', signupLogin: 'Sign up / Log in', logout: 'Log out', signupMethod: 'Sign up with', emailChoice: 'Email', phoneChoice: 'Phone / SMS', authEmail: 'Email', authPhone: 'Phone number', phonePending: 'Phone verification will activate after the SMS service is connected.', password: 'Password', createAccount: 'Create account', forgotPassword: 'Forgot password?', profileApproved: 'Your profile is approved for the private pilot.', profilePrivate: 'You are logged in. Your profile remains private until PGN administration approves it.', noProfiles: 'No approved profiles are available yet.', approvedCount: 'approved pilot profile(s).',
+    displayName: 'Display name', age18: 'Age (18+)', country: 'Country', city: 'City', languagesLabel: 'Languages (comma separated)', languagesPlaceholder: 'Tigrinya, Amharic, English', education: 'Education', faith: 'Faith', minAge: 'Preferred minimum age', maxAge: 'Preferred maximum age', photo: 'Profile photo (JPG, PNG or WebP; max 5MB)', aboutMe: 'About me', lookingFor: 'The person I hope to meet', safetyAgreement: 'I am 18 or older and agree to the PGN Singles safety rules.', saveProfile: 'Save My Profile', credentialsPrivate: 'Your email or phone and login credentials are never shown on your public profile.', approvedMembers: 'Approved Pilot Members', loginToView: 'Log in to view approved pilot profiles.', accountTitle: 'PGN Singles Account', signup: 'Sign up', login: 'Log in', signupLogin: 'Sign up / Log in', logout: 'Log out', signupMethod: 'Sign up with', loginMethod: 'Log in with', emailChoice: 'Email', phoneChoice: 'Phone', authEmail: 'Email', authPhone: 'Phone number', phonePending: 'Use your phone number to join directly. No SMS code is required.', password: 'Password', createAccount: 'Create account', forgotPassword: 'Forgot password?', profileApproved: 'Your profile is approved for the private pilot.', profilePrivate: 'You are logged in. Your profile remains private until PGN administration approves it.', noProfiles: 'No approved profiles are available yet.', approvedCount: 'approved pilot profile(s).',
     shareTitle: 'Help PGN Grow', shareText: 'Invite single friends and family to join PGN Singles by sharing this link.', shareButton: 'Share PGN', moreApps: 'More Apps', copyLink: 'Copy Link', shareWhatsApp: 'WhatsApp', shareEmail: 'Email', shareNote: 'Use More Apps to share through Instagram, TikTok, YouTube and any other app installed on your phone.', copied: 'PGN link copied!',
     name: 'Full name',
     age: 'Age',
@@ -368,7 +375,7 @@ const copy = {
     profileHeading: 'ናይ PGN ፕሮፋይልካ', loginPrompt: 'ፕሮፋይልካ ንምፍጣርን ብውሕስነት ንምቕማጥን ተመዝገብ ወይ እቶ።', pilotLabel: 'ውልቃዊ ፈተነ፦', pilotText: 'ሓደስቲ ፕሮፋይላት ብምምሕዳር PGN ክሳዕ ዝፍቀደሎም ውልቃዊ ኮይኖም ይጸንሑ።',
     displayName: 'መጸውዒ ስም', age18: 'ዕድመ (18+)', country: 'ሃገር', city: 'ከተማ', languagesLabel: 'ቋንቋታት (ብኮማ ፍለዮም)', languagesPlaceholder: 'ትግርኛ፣ ኣምሓርኛ፣ English', education: 'ትምህርቲ', faith: 'እምነት', minAge: 'ዝሓሸ ዝተሓተ ዕድመ', maxAge: 'ዝሓሸ ዝለዓለ ዕድመ', photo: 'ስእሊ ፕሮፋይል (JPG፣ PNG ወይ WebP፤ ክሳዕ 5MB)', aboutMe: 'ብዛዕባይ', lookingFor: 'ክረኽቦ ዝደሊ ሰብ', safetyAgreement: '18 ዓመት ወይ ልዕሊኡ እየ፣ ንሕጊ ድሕነት PGN Singles ድማ እሰማማዕ።', saveProfile: 'ፕሮፋይለይ ዓቅብ', credentialsPrivate: 'ኢመይልካን ናይ ምእታው ሓበሬታኻን ኣብ ህዝባዊ ፕሮፋይልካ ፈጺሙ ኣይረአን።', approvedMembers: 'ዝተፈቐደሎም ኣባላት ፈተነ', loginToView: 'ዝተፈቐደሎም ፕሮፋይላት ንምርኣይ እቶ።', accountTitle: 'ኣካውንት PGN Singles', signup: 'ተመዝገብ', login: 'እቶ', signupLogin: 'ተመዝገብ / እቶ', logout: 'ውጻእ', authEmail: 'ኢመይል', password: 'መሕለፊ ቃል', createAccount: 'ኣካውንት ፍጠር', forgotPassword: 'መሕለፊ ቃል ረሲዕካ?', profileApproved: 'ፕሮፋይልካ ንውልቃዊ ፈተነ ተፈቒዱሉ።', profilePrivate: 'ኣቲኻ ኣለኻ። ፕሮፋይልካ ብምምሕዳር PGN ክሳዕ ዝፍቀደሉ ውልቃዊ ኮይኑ ይጸንሕ።', noProfiles: 'ክርአ ዝኽእል ዝተፈቐደሉ ፕሮፋይል ገና የለን።', approvedCount: 'ዝተፈቐደሎም ፕሮፋይላት ፈተነ።',
     shareTitle: 'PGN ንኽዓቢ ይሓግዙ', shareText: 'ነዚ ሊንክ ንዘይተመርዓዉ ኣዕሩኽትኹምን ቤተሰብኩምን ኣካፍሉ።', shareButton: 'PGN ኣካፍል', moreApps: 'ካልኦት Apps', copyLink: 'ሊንክ ቅዳሕ', shareWhatsApp: 'WhatsApp', shareEmail: 'ኢመይል', shareNote: 'ናብ Instagram፣ TikTok፣ YouTubeን ኣብ ስልክኹም ዘሎ ካልእ Appን ንምክፋል “ካልኦት Apps” ጠውቑ።', copied: 'ሊንክ PGN ተቐዲሑ!',
-    signupMethod: 'ብምንታይ ትምዝገብ?', emailChoice: 'ኢመይል', phoneChoice: 'ተለፎን / SMS', authPhone: 'ቁጽሪ ተለፎን', phonePending: 'ናይ SMS ኣገልግሎት ምስተኣሳሰረ Phone verification ክንቀሳቐስ እዩ።',
+    signupMethod: 'ብምንታይ ትምዝገብ?', loginMethod: 'ብምንታይ ትኣቱ?', emailChoice: 'ኢመይል', phoneChoice: 'ተለፎን', authPhone: 'ቁጽሪ ተለፎን', phonePending: 'ብቁጽሪ ተለፎንካ ቀጥታ ተመዝገብ። ናይ SMS ኮድ ኣየድልን።',
     name: 'ምሉእ ስም',
     age: 'ዕድመ',
     gender: 'ጾታ',
@@ -412,7 +419,7 @@ const copy = {
     profileHeading: 'የPGN መገለጫዎ', loginPrompt: 'መገለጫዎን ለመፍጠርና በደህንነት ለማስቀመጥ ይመዝገቡ ወይም ይግቡ።', pilotLabel: 'የግል ሙከራ፦', pilotText: 'አዲስ መገለጫዎች በPGN አስተዳደር እስኪፈቀዱ ድረስ የግል ሆነው ይቆያሉ።',
     displayName: 'መጠሪያ ስም', age18: 'ዕድሜ (18+)', country: 'ሀገር', city: 'ከተማ', languagesLabel: 'ቋንቋዎች (በኮማ ይለዩ)', languagesPlaceholder: 'ትግርኛ፣ አማርኛ፣ English', education: 'ትምህርት', faith: 'እምነት', minAge: 'የሚመረጠው ዝቅተኛ ዕድሜ', maxAge: 'የሚመረጠው ከፍተኛ ዕድሜ', photo: 'የመገለጫ ፎቶ (JPG፣ PNG ወይም WebP፤ እስከ 5MB)', aboutMe: 'ስለ እኔ', lookingFor: 'ማግኘት የምፈልገው ሰው', safetyAgreement: 'ዕድሜዬ 18 ወይም ከዚያ በላይ ነው፣ በPGN Singles የደህንነት ሕጎችም እስማማለሁ።', saveProfile: 'መገለጫዬን አስቀምጥ', credentialsPrivate: 'ኢሜይልዎና የመግቢያ መረጃዎ በይፋዊ መገለጫዎ ላይ ፈጽሞ አይታይም።', approvedMembers: 'የተፈቀደላቸው የሙከራ አባላት', loginToView: 'የተፈቀደላቸውን መገለጫዎች ለማየት ይግቡ።', accountTitle: 'የPGN Singles መለያ', signup: 'ይመዝገቡ', login: 'ይግቡ', signupLogin: 'ይመዝገቡ / ይግቡ', logout: 'ይውጡ', authEmail: 'ኢሜይል', password: 'የይለፍ ቃል', createAccount: 'መለያ ይፍጠሩ', forgotPassword: 'የይለፍ ቃል ረሱ?', profileApproved: 'መገለጫዎ ለግል ሙከራው ተፈቅዷል።', profilePrivate: 'ገብተዋል። መገለጫዎ በPGN አስተዳደር እስኪፈቀድ ድረስ የግል ሆኖ ይቆያል።', noProfiles: 'ገና የተፈቀደ መገለጫ የለም።', approvedCount: 'የተፈቀዱ የሙከራ መገለጫዎች።',
     shareTitle: 'PGN እንዲያድግ ይርዱ', shareText: 'ይህን ሊንክ ላላገቡ ጓደኞችና ቤተሰቦች በማጋራት ወደ PGN Singles ይጋብዙ።', shareButton: 'PGN አጋራ', moreApps: 'ሌሎች Apps', copyLink: 'ሊንክ ቅዳ', shareWhatsApp: 'WhatsApp', shareEmail: 'ኢሜይል', shareNote: 'በInstagram፣ TikTok፣ YouTubeና በስልክዎ በተጫኑ ሌሎች Apps ለማጋራት “ሌሎች Apps” ይጫኑ።', copied: 'የPGN ሊንክ ተቀድቷል!',
-    signupMethod: 'በምን ይመዝገቡ?', emailChoice: 'ኢሜይል', phoneChoice: 'ስልክ / SMS', authPhone: 'ስልክ ቁጥር', phonePending: 'የSMS አገልግሎት ከተገናኘ በኋላ የስልክ ማረጋገጫ ይነቃል።',
+    signupMethod: 'በምን ይመዝገቡ?', loginMethod: 'በምን ይግቡ?', emailChoice: 'ኢሜይል', phoneChoice: 'ስልክ', authPhone: 'ስልክ ቁጥር', phonePending: 'በስልክ ቁጥርዎ በቀጥታ ይመዝገቡ። የSMS ኮድ አያስፈልግም።',
     name: 'ሙሉ ስም',
     age: 'ዕድሜ',
     gender: 'ጾታ',
@@ -509,6 +516,9 @@ setLanguage(
   });
 
   const signupMethod = document.getElementById('signupMethod');
+  const loginMethod = document.getElementById('loginMethod');
+  const normalisePhone = value => String(value || '').replace(/[^0-9]/g, '');
+  const phoneLoginEmail = value => 'pgn-phone-' + normalisePhone(value) + '@phone.pgn.app';
   signupMethod.addEventListener('change', () => {
     const usePhone = signupMethod.value === 'phone';
     document.getElementById('signupEmailRow').classList.toggle('hidden', usePhone);
@@ -517,28 +527,44 @@ setLanguage(
     document.querySelector('#signupPane [name="phone"]').required = usePhone;
   });
 
+  loginMethod.addEventListener('change', () => {
+    const usePhone = loginMethod.value === 'phone';
+    document.getElementById('loginEmailRow').classList.toggle('hidden', usePhone);
+    document.getElementById('loginPhoneRow').classList.toggle('hidden', !usePhone);
+    document.querySelector('#loginPane [name="email"]').required = !usePhone;
+    document.querySelector('#loginPane [name="phone"]').required = usePhone;
+    document.getElementById('resetPassword').classList.toggle('hidden', usePhone);
+  });
+
   document.getElementById('signupPane').addEventListener('submit', async e => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    if (data.get('signup_method') === 'phone') {
-      return message(authMessage, 'Phone/SMS verification is prepared but cannot activate until PGN connects an SMS provider. Please use email for now.');
-    }
+    const usePhone = data.get('signup_method') === 'phone';
+    const phone = normalisePhone(data.get('phone'));
+    if (usePhone && (phone.length < 8 || phone.length > 15)) return message(authMessage, 'Enter a valid phone number with country code.');
+    const accountEmail = usePhone ? phoneLoginEmail(phone) : String(data.get('email')).trim().toLowerCase();
     message(authMessage, 'Creating your secure account…', true);
-    const { error } = await client.auth.signUp({
-      email: data.get('email'),
+    const { data: signup, error } = await client.auth.signUp({
+      email: accountEmail,
       password: data.get('password'),
-      options: { data: { display_name: data.get('display_name'), requested_admin: String(data.get('email')).toLowerCase() === ADMIN_EMAIL } }
+      options: { data: { display_name: data.get('display_name'), phone_number: usePhone ? String(data.get('phone')).trim() : null, signup_method: usePhone ? 'phone' : 'email', requested_admin: accountEmail === ADMIN_EMAIL } }
     });
     if (error) return message(authMessage, error.message);
-    message(authMessage, 'Account created. Check your email to confirm your address, then log in.', true);
+    if (!signup.session) return message(authMessage, 'Account created, but direct login is still disabled in the account service. PGN administration must turn off email confirmation once; no verification email is needed after that.');
+    message(authMessage, 'Account created. You are now logged in—no verification code is required.', true);
+    authDialog.close();
+    await refreshSession();
   });
 
   document.getElementById('loginPane').addEventListener('submit', async e => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+    const usePhone = data.get('login_method') === 'phone';
+    const phone = normalisePhone(data.get('phone'));
+    if (usePhone && (phone.length < 8 || phone.length > 15)) return message(authMessage, 'Enter a valid phone number with country code.');
     message(authMessage, 'Logging in…', true);
     const { error } = await client.auth.signInWithPassword({
-      email: data.get('email'),
+      email: usePhone ? phoneLoginEmail(phone) : String(data.get('email')).trim().toLowerCase(),
       password: data.get('password')
     });
     if (error) return message(authMessage, error.message);
@@ -547,6 +573,7 @@ setLanguage(
   });
 
   document.getElementById('resetPassword').addEventListener('click', async () => {
+    if (loginMethod.value === 'phone') return message(authMessage, 'Password reset by phone is not available yet. Contact PGN administration for help.');
     const email = document.querySelector('#loginPane [name="email"]').value.trim();
     if (!email) return message(authMessage, 'Enter your email first.');
     const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
