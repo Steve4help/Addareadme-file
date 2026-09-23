@@ -627,12 +627,17 @@ setLanguage(
     const avatar = data.get('avatar');
 
     message(document.getElementById('formMessage'), 'Saving securely…', true);
+    if ((!avatar || !avatar.size) && !avatarPath) {
+      return message(document.getElementById('formMessage'), 'Please choose a profile photo before saving. The photo must finish uploading so PGN administration can review it.');
+    }
     if (avatar && avatar.size) {
       if (avatar.size > 5 * 1024 * 1024) return message(document.getElementById('formMessage'), 'Photo must be smaller than 5MB.');
       const ext = (avatar.name.split('.').pop() || 'jpg').toLowerCase();
       avatarPath = currentUser.id + '/profile.' + ext;
       const upload = await client.storage.from('avatars').upload(avatarPath, avatar, { upsert: true, contentType: avatar.type });
       if (upload.error) return message(document.getElementById('formMessage'), upload.error.message);
+      if (!upload.data?.path) return message(document.getElementById('formMessage'), 'The photo did not finish uploading. Please check your connection and try again.');
+      avatarPath = upload.data.path;
     }
 
     const payload = {
@@ -926,7 +931,7 @@ setLanguage(
       x.className='pgn-item';
       x.innerHTML=(avatarUrls.length
         ? '<img class="match-avatar" alt="Profile photo of '+esc(p.display_name||'member')+'" src="'+esc(avatarUrls[0])+'">'
-        : '<div class="match-avatar" aria-label="No profile photo"></div>')+
+        : '<div class="match-avatar" aria-label="Photo not uploaded"></div><p><small style="color:#9b1c31">Photo not uploaded</small></p>')+
         '<strong>'+esc(p.display_name||'Unnamed')+(p.verified?' ✓':'')+'</strong>'+
         '<p>'+esc([p.city,p.country].filter(Boolean).join(', '))+'</p>'+
         '<p><small>'+(p.pilot_approved?'Approved profile':'Awaiting approval')+(p.active===false?' · Inactive':'')+'</small></p>'+
