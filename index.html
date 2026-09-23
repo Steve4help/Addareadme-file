@@ -696,17 +696,51 @@ setLanguage(
 
   let matchesLoadNumber = 0;
 
+  const avatarObjectUrls = new Set();
+  window.addEventListener('pagehide', () => avatarObjectUrls.forEach(url => URL.revokeObjectURL(url)), {once:true});
+
+  function normaliseAvatarPath(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    if (!/^https?:\/\//i.test(raw)) return raw.replace(/^\/+/, '').replace(/^avatars\//, '');
+    try {
+      const url = new URL(raw);
+      const marker = '/storage/v1/object/';
+      const at = url.pathname.indexOf(marker);
+      if (at < 0) return raw;
+      let objectPath = decodeURIComponent(url.pathname.slice(at + marker.length));
+      objectPath = objectPath.replace(/^(?:public|sign|authenticated)\/avatars\//, '');
+      return objectPath || raw;
+    } catch (_) { return raw; }
+  }
+
   async function avatarUrlsFor(storageClient, profile, expiresIn = 900) {
-    const paths = [profile.avatar_path];
-    if (!profile.avatar_path && profile.id) {
+    const savedAvatar = String(profile.avatar_path || '').trim();
+    const paths = [];
+    if (/^https?:\/\//i.test(savedAvatar)) paths.push(savedAvatar);
+    const normalised = normaliseAvatarPath(savedAvatar);
+    if (normalised && !/^https?:\/\//i.test(normalised)) paths.push(normalised);
+    if (profile.id) {
       ['jpg','jpeg','png','webp'].forEach(ext => paths.push(profile.id + '/profile.' + ext));
+      // Older PGN versions preserved the original filename. Discover it too.
+      const listed = await storageClient.storage.from('avatars').list(profile.id, {limit:20, sortBy:{column:'updated_at',order:'desc'}});
+      if (listed.data) listed.data
+        .filter(file => file.name && !file.name.startsWith('.') && /\.(?:jpe?g|png|webp)$/i.test(file.name))
+        .forEach(file => paths.push(profile.id + '/' + file.name));
     }
     const urls = [];
-    for (const path of paths.filter(Boolean)) {
+    for (const path of [...new Set(paths.filter(Boolean))]) {
+      if (/^https?:\/\//i.test(path)) { urls.push(path); continue; }
       const signed = await storageClient.storage.from('avatars').createSignedUrl(path, expiresIn);
       if (signed.data?.signedUrl) urls.push(signed.data.signedUrl);
       const publicResult = storageClient.storage.from('avatars').getPublicUrl(path);
       if (publicResult.data?.publicUrl) urls.push(publicResult.data.publicUrl);
+      const downloaded = await storageClient.storage.from('avatars').download(path);
+      if (downloaded.data) {
+        const objectUrl = URL.createObjectURL(downloaded.data);
+        avatarObjectUrls.add(objectUrl);
+        urls.push(objectUrl);
+      }
     }
     return [...new Set(urls)];
   }
@@ -857,18 +891,7 @@ setLanguage(
   document.getElementById('pgnReportForm').addEventListener('submit',async e=>{e.preventDefault();if(!pgnUser)return;const d=new FormData(e.currentTarget),st=document.getElementById('pgnReportStatus');setStatus(st,'Submitting…',true);const r=await pgnClient.from('reports').insert({reporter_id:pgnUser.id,reported_id:d.get('reported_id'),reason:d.get('reason'),details:String(d.get('details')||'').trim()});if(r.error)return setStatus(st,r.error.message);setStatus(st,'Report submitted privately for review.',true);});
 
   async function loadInbox(){const st=document.getElementById('pgnInboxStatus'),list=document.getElementById('pgnInbox');list.innerHTML='';if(!pgnUser){translateExtra();return;}const r=await pgnClient.from('messages').select('id,sender_id,receiver_id,body,created_at').or('sender_id.eq.'+pgnUser.id+',receiver_id.eq.'+pgnUser.id).order('created_at',{ascending:false}).limit(30);if(r.error){st.textContent=r.error.message;return;}st.textContent=r.data.length?r.data.length+' recent message(s).':'No messages yet.';r.data.forEach(m=>{const x=document.createElement('div');x.className='pgn-item';x.innerHTML='<strong>'+(m.sender_id===pgnUser.id?'Sent':'Received')+'</strong><p>'+esc(m.body)+'</p><small>'+new Date(m.created_at).toLocaleString()+'</small>';list.appendChild(x);});}
-  async function adminAvatarUrls(profile){
-    const paths=[profile.avatar_path];
-    if(!profile.avatar_path&&profile.id)['jpg','jpeg','png','webp'].forEach(ext=>paths.push(profile.id+'/profile.'+ext));
-    const urls=[];
-    for(const path of paths.filter(Boolean)){
-      const signed=await pgnClient.storage.from('avatars').createSignedUrl(path,3600);
-      if(signed.data?.signedUrl)urls.push(signed.data.signedUrl);
-      const publicResult=pgnClient.storage.from('avatars').getPublicUrl(path);
-      if(publicResult.data?.publicUrl)urls.push(publicResult.data.publicUrl);
-    }
-    return [...new Set(urls)];
-  }
+  async function adminAvatarUrls(profile){return avatarUrlsFor(pgnClient,profile,3600);}
   function adminAvatarFallback(img,urls){
     if(!img||!urls.length)return;
     let next=1;
