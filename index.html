@@ -803,7 +803,31 @@ setLanguage(
   }
   new MutationObserver(enhanceCards).observe(document.getElementById('matchesGrid'),{childList:true,subtree:true});
 
-  document.getElementById('pgnMessageForm').addEventListener('submit',async e=>{e.preventDefault();if(!pgnUser)return;const d=new FormData(e.currentTarget),st=document.getElementById('pgnMessageStatus');setStatus(st,'Sending…',true);const r=await pgnClient.from('messages').insert({sender_id:pgnUser.id,receiver_id:d.get('receiver_id'),body:String(d.get('body')).trim()});if(r.error)return setStatus(st,r.error.message);e.currentTarget.body.value='';setStatus(st,'Message sent securely.',true);loadInbox();});
+  document.getElementById('pgnMessageForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const form=e.currentTarget,st=document.getElementById('pgnMessageStatus'),button=form.querySelector('button[type="submit"]');
+    if(!pgnUser)return setStatus(st,'Your session has ended. Please log in again.');
+    const d=new FormData(form),receiverId=String(d.get('receiver_id')||''),body=String(d.get('body')||'').trim();
+    if(!receiverId)return setStatus(st,'Please close this window and choose the member again.');
+    if(!body)return setStatus(st,'Please write a message first.');
+    button.disabled=true;
+    setStatus(st,'Sending…',true);
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),15000);
+    try{
+      const r=await pgnClient.from('messages').insert({sender_id:pgnUser.id,receiver_id:receiverId,body}).abortSignal(controller.signal);
+      if(r.error)return setStatus(st,'Message was not sent: '+r.error.message);
+      form.body.value='';
+      setStatus(st,'Message sent securely.',true);
+      loadInbox();
+    }catch(error){
+      const timedOut=error?.name==='AbortError';
+      setStatus(st,timedOut?'The connection took too long. The message was not sent. Check your internet and tap Send again.':'Message was not sent. Please try again.');
+    }finally{
+      clearTimeout(timer);
+      button.disabled=false;
+    }
+  });
   document.getElementById('pgnReportForm').addEventListener('submit',async e=>{e.preventDefault();if(!pgnUser)return;const d=new FormData(e.currentTarget),st=document.getElementById('pgnReportStatus');setStatus(st,'Submitting…',true);const r=await pgnClient.from('reports').insert({reporter_id:pgnUser.id,reported_id:d.get('reported_id'),reason:d.get('reason'),details:String(d.get('details')||'').trim()});if(r.error)return setStatus(st,r.error.message);setStatus(st,'Report submitted privately for review.',true);});
 
   async function loadInbox(){const st=document.getElementById('pgnInboxStatus'),list=document.getElementById('pgnInbox');list.innerHTML='';if(!pgnUser){translateExtra();return;}const r=await pgnClient.from('messages').select('id,sender_id,receiver_id,body,created_at').or('sender_id.eq.'+pgnUser.id+',receiver_id.eq.'+pgnUser.id).order('created_at',{ascending:false}).limit(30);if(r.error){st.textContent=r.error.message;return;}st.textContent=r.data.length?r.data.length+' recent message(s).':'No messages yet.';r.data.forEach(m=>{const x=document.createElement('div');x.className='pgn-item';x.innerHTML='<strong>'+(m.sender_id===pgnUser.id?'Sent':'Received')+'</strong><p>'+esc(m.body)+'</p><small>'+new Date(m.created_at).toLocaleString()+'</small>';list.appendChild(x);});}
