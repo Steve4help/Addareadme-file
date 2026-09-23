@@ -694,7 +694,34 @@ setLanguage(
     memberStatus.textContent = currentProfile?.pilot_approved ? words.profileApproved : words.profilePrivate;
   }
 
+  let matchesLoadNumber = 0;
+
+  async function avatarUrlsFor(storageClient, profile, expiresIn = 900) {
+    const paths = [profile.avatar_path];
+    if (!profile.avatar_path && profile.id) {
+      ['jpg','jpeg','png','webp'].forEach(ext => paths.push(profile.id + '/profile.' + ext));
+    }
+    const urls = [];
+    for (const path of paths.filter(Boolean)) {
+      const signed = await storageClient.storage.from('avatars').createSignedUrl(path, expiresIn);
+      if (signed.data?.signedUrl) urls.push(signed.data.signedUrl);
+      const publicResult = storageClient.storage.from('avatars').getPublicUrl(path);
+      if (publicResult.data?.publicUrl) urls.push(publicResult.data.publicUrl);
+    }
+    return [...new Set(urls)];
+  }
+
+  function installAvatarFallback(img, urls) {
+    if (!img || !urls.length) return;
+    let next = 1;
+    img.onerror = () => {
+      if (next < urls.length) img.src = urls[next++];
+      else { img.onerror = null; img.replaceWith(Object.assign(document.createElement('div'), {className:'match-avatar'})); }
+    };
+  }
+
   async function loadMatches() {
+    const thisLoad = ++matchesLoadNumber;
     const lang = localStorage.getItem('pgnLanguage') || 'en';
     const words = copy[lang] || copy.en;
     const grid = document.getElementById('matchesGrid');
@@ -703,24 +730,23 @@ setLanguage(
     const { data, error } = await client.from('profiles')
       .select('id,display_name,birth_date,gender,country,city,languages,education,faith,bio,looking_for,avatar_path,verified')
       .eq('active', true).eq('pilot_approved', true).neq('id', currentUser.id).limit(30);
-    if (error) { matchesMessage.textContent = error.message; return; }
+    if (error) { if (thisLoad === matchesLoadNumber) matchesMessage.textContent = error.message; return; }
+    if (thisLoad !== matchesLoadNumber) return;
     matchesMessage.textContent = data.length ? data.length + ' ' + words.approvedCount : words.noProfiles;
     for (const p of data) {
-      let avatarUrl = '';
-      if (p.avatar_path) {
-        const signed = await client.storage.from('avatars').createSignedUrl(p.avatar_path, 900);
-        avatarUrl = signed.data?.signedUrl || '';
-      }
+      const avatarUrls = await avatarUrlsFor(client, p, 900);
+      if (thisLoad !== matchesLoadNumber) return;
       const age = p.birth_date ? new Date().getFullYear() - new Date(p.birth_date).getFullYear() : '';
       const card = document.createElement('article');
       card.className = 'match-card';
       card.innerHTML =
-        (avatarUrl ? '<img class="match-avatar" alt="" src="' + avatarUrl + '">' : '<div class="match-avatar"></div>') +
+        (avatarUrls.length ? '<img class="match-avatar" alt="Profile photo" src="' + escapeHtml(avatarUrls[0]) + '">' : '<div class="match-avatar"></div>') +
         '<h3>' + escapeHtml(p.display_name) + (p.verified ? ' ✓' : '') + '</h3>' +
         '<p>' + escapeHtml([age && age + ' years', p.city, p.country].filter(Boolean).join(' • ')) + '</p>' +
         '<p>' + escapeHtml(p.bio || '') + '</p>' +
         '<button class="mini like-btn" data-id="' + p.id + '" type="button">Show interest</button>';
       grid.appendChild(card);
+      installAvatarFallback(card.querySelector('img.match-avatar'), avatarUrls);
     }
     document.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', async () => {
       const { error } = await client.from('likes').insert({ sender_id: currentUser.id, receiver_id: btn.dataset.id });
@@ -831,6 +857,26 @@ setLanguage(
   document.getElementById('pgnReportForm').addEventListener('submit',async e=>{e.preventDefault();if(!pgnUser)return;const d=new FormData(e.currentTarget),st=document.getElementById('pgnReportStatus');setStatus(st,'Submitting…',true);const r=await pgnClient.from('reports').insert({reporter_id:pgnUser.id,reported_id:d.get('reported_id'),reason:d.get('reason'),details:String(d.get('details')||'').trim()});if(r.error)return setStatus(st,r.error.message);setStatus(st,'Report submitted privately for review.',true);});
 
   async function loadInbox(){const st=document.getElementById('pgnInboxStatus'),list=document.getElementById('pgnInbox');list.innerHTML='';if(!pgnUser){translateExtra();return;}const r=await pgnClient.from('messages').select('id,sender_id,receiver_id,body,created_at').or('sender_id.eq.'+pgnUser.id+',receiver_id.eq.'+pgnUser.id).order('created_at',{ascending:false}).limit(30);if(r.error){st.textContent=r.error.message;return;}st.textContent=r.data.length?r.data.length+' recent message(s).':'No messages yet.';r.data.forEach(m=>{const x=document.createElement('div');x.className='pgn-item';x.innerHTML='<strong>'+(m.sender_id===pgnUser.id?'Sent':'Received')+'</strong><p>'+esc(m.body)+'</p><small>'+new Date(m.created_at).toLocaleString()+'</small>';list.appendChild(x);});}
+  async function adminAvatarUrls(profile){
+    const paths=[profile.avatar_path];
+    if(!profile.avatar_path&&profile.id)['jpg','jpeg','png','webp'].forEach(ext=>paths.push(profile.id+'/profile.'+ext));
+    const urls=[];
+    for(const path of paths.filter(Boolean)){
+      const signed=await pgnClient.storage.from('avatars').createSignedUrl(path,3600);
+      if(signed.data?.signedUrl)urls.push(signed.data.signedUrl);
+      const publicResult=pgnClient.storage.from('avatars').getPublicUrl(path);
+      if(publicResult.data?.publicUrl)urls.push(publicResult.data.publicUrl);
+    }
+    return [...new Set(urls)];
+  }
+  function adminAvatarFallback(img,urls){
+    if(!img||!urls.length)return;
+    let next=1;
+    img.onerror=()=>{
+      if(next<urls.length)img.src=urls[next++];
+      else{img.onerror=null;img.replaceWith(Object.assign(document.createElement('div'),{className:'match-avatar'}));}
+    };
+  }
   async function loadAdmin(){
     const card=document.getElementById('pgnAdminCard');
     if(!pgnUser){card.classList.add('hidden');return;}
@@ -852,15 +898,11 @@ setLanguage(
     list.innerHTML='';
 
     for(const p of r.data){
-      let avatarUrl='';
-      if(p.avatar_path){
-        const signed=await pgnClient.storage.from('avatars').createSignedUrl(p.avatar_path,3600);
-        avatarUrl=signed.data?.signedUrl||'';
-      }
+      const avatarUrls=await adminAvatarUrls(p);
       const x=document.createElement('div');
       x.className='pgn-item';
-      x.innerHTML=(avatarUrl
-        ? '<img class="match-avatar" alt="Profile photo of '+esc(p.display_name||'member')+'" src="'+avatarUrl+'">'
+      x.innerHTML=(avatarUrls.length
+        ? '<img class="match-avatar" alt="Profile photo of '+esc(p.display_name||'member')+'" src="'+esc(avatarUrls[0])+'">'
         : '<div class="match-avatar" aria-label="No profile photo"></div>')+
         '<strong>'+esc(p.display_name||'Unnamed')+(p.verified?' ✓':'')+'</strong>'+
         '<p>'+esc([p.city,p.country].filter(Boolean).join(', '))+'</p>'+
@@ -869,6 +911,7 @@ setLanguage(
           ? '<button class="mini" type="button" disabled>Approved ✓</button>'
           : '<button class="mini pgn-approve" data-id="'+p.id+'" type="button">Approve pilot profile</button>');
       list.appendChild(x);
+      adminAvatarFallback(x.querySelector('img.match-avatar'),avatarUrls);
     }
 
     document.querySelectorAll('.pgn-approve').forEach(b=>b.onclick=async()=>{
