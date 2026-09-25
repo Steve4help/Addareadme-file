@@ -496,6 +496,7 @@ setLanguage(
   const ADMIN_EMAIL = 'pgnhelp@gmail.com';
   let currentUser = null;
   let currentProfile = null;
+  let currentUserIsAdmin = false;
 
   const message = (el, text, ok = false) => {
     el.textContent = text;
@@ -799,13 +800,20 @@ setLanguage(
   async function refreshSession() {
     const { data } = await client.auth.getSession();
     currentUser = data.session?.user || null;
+    currentUserIsAdmin = !!currentUser && String(currentUser.email || '').toLowerCase() === ADMIN_EMAIL;
+    if (currentUser && !currentUserIsAdmin) {
+      const adminCheck = await client.from('admin_users').select('user_id').eq('user_id', currentUser.id).maybeSingle();
+      currentUserIsAdmin = !!adminCheck.data;
+    }
+    document.body.classList.toggle('pgn-admin-mode', currentUserIsAdmin);
     openAuth.classList.toggle('hidden', !!currentUser);
     logoutBtn.classList.toggle('hidden', !currentUser);
-    sharePgn.classList.toggle('hidden', !currentUser);
+    sharePgn.classList.toggle('hidden', !currentUser || currentUserIsAdmin);
     currentProfile = null;
-    if (currentUser) await loadProfile();
+    if (currentUser && !currentUserIsAdmin) await loadProfile();
     updateStatus();
-    await loadMatches();
+    if (!currentUserIsAdmin) await loadMatches();
+    document.dispatchEvent(new CustomEvent('pgn:admin-mode', {detail:{isAdmin:currentUserIsAdmin}}));
   }
 
   client.auth.onAuthStateChange(() => setTimeout(refreshSession, 0));
@@ -817,12 +825,12 @@ setLanguage(
 <script>
 (() => {
   const style = document.createElement('style');
-  style.textContent = '.pgn-tools{padding:54px 20px;background:#eef4fb}.pgn-tools-wrap{max-width:1100px;margin:auto}.pgn-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.pgn-tool{background:#fff;border:1px solid #dce5f0;border-radius:18px;padding:20px;box-shadow:0 8px 24px #17355710}.pgn-tool h3{margin-top:0;color:#103b70}.pgn-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.pgn-danger{color:#9b1c31;border-color:#c43b52}.pgn-list{display:grid;gap:9px;margin-top:12px}.pgn-item{padding:11px;border:1px solid #dce5f0;border-radius:12px}.pgn-vip-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.pgn-vip-controls select{margin:0;padding:9px}.pgn-vip-controls .mini{grid-column:1/-1}.pgn-vip-badge{display:inline-block;margin-top:5px;padding:4px 9px;border-radius:999px;background:#fff4cf;color:#6c5100;font-weight:800}.pgn-legal{max-width:720px;width:calc(100% - 28px);border:0;border-radius:18px;padding:0}.pgn-legal .dialog-card{max-height:80vh;overflow:auto}.pgn-legal textarea{width:100%;min-height:110px}.pgn-legal-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}.pgn-legal-links button{border:0;background:transparent;color:#fff;text-decoration:underline;cursor:pointer}@media(max-width:760px){.pgn-tool-grid{grid-template-columns:1fr}.pgn-vip-controls{grid-template-columns:1fr}}';
+  style.textContent = '.pgn-tools{padding:54px 20px;background:#eef4fb}.pgn-tools-wrap{max-width:1100px;margin:auto}.pgn-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.pgn-tool{background:#fff;border:1px solid #dce5f0;border-radius:18px;padding:20px;box-shadow:0 8px 24px #17355710}.pgn-tool h3{margin-top:0;color:#103b70}.pgn-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.pgn-danger{color:#9b1c31;border-color:#c43b52}.pgn-list{display:grid;gap:9px;margin-top:12px}.pgn-item{padding:11px;border:1px solid #dce5f0;border-radius:12px}.pgn-vip-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.pgn-vip-controls select{margin:0;padding:9px}.pgn-vip-controls .mini{grid-column:1/-1}.pgn-vip-badge{display:inline-block;margin-top:5px;padding:4px 9px;border-radius:999px;background:#fff4cf;color:#6c5100;font-weight:800}.pgn-legal{max-width:720px;width:calc(100% - 28px);border:0;border-radius:18px;padding:0}.pgn-legal .dialog-card{max-height:80vh;overflow:auto}.pgn-legal textarea{width:100%;min-height:110px}.pgn-legal-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}.pgn-legal-links button{border:0;background:transparent;color:#fff;text-decoration:underline;cursor:pointer}.pgn-admin-mode #profile,.pgn-admin-mode #matches,.pgn-admin-mode #membership,.pgn-admin-mode .hero,.pgn-admin-mode main>.section-soft{display:none!important}.pgn-admin-mode .pgn-tools{min-height:70vh;padding-top:36px}.pgn-admin-mode .pgn-member-card{display:none!important}.pgn-admin-mode #pgnAdminCard{display:block!important;grid-column:1/-1}.pgn-admin-mode #pgnAdminList{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media(max-width:760px){.pgn-tool-grid,.pgn-admin-mode #pgnAdminList{grid-template-columns:1fr}.pgn-vip-controls{grid-template-columns:1fr}}';
   document.head.appendChild(style);
 
   const section = document.createElement('section');
   section.className = 'pgn-tools';
-  section.innerHTML = '<div class="pgn-tools-wrap"><h2 class="title" data-pgnx="toolsTitle">Member Safety & Communication</h2><div class="pgn-tool-grid"><article class="pgn-tool"><h3 data-pgnx="messagesTitle">Private Messages</h3><p data-pgnx="messagesHelp">Message approved pilot members without publishing your contact details.</p><div id="pgnInboxStatus" class="member-status" data-pgnx="loginMessages">Log in to view messages.</div><div id="pgnInbox" class="pgn-list"></div></article><article class="pgn-tool"><h3 data-pgnx="safetyTitle">Safety Center</h3><p data-pgnx="safetyHelp">Use Message, Block or Report on an approved member profile. Reports are reviewed privately.</p><button class="mini pgn-open" data-dialog="pgnSafety" type="button" data-pgnx="readSafety">Read Safety Rules</button></article><article id="pgnAdminCard" class="pgn-tool hidden"><h3 data-pgnx="adminTitle">Admin Review & Free VIP</h3><p data-pgnx="adminHelp">Approve profiles and grant selected members free VIP access.</p><div id="pgnAdminStatus" class="member-status"></div><div id="pgnAdminList" class="pgn-list"></div></article></div></div>';
+  section.innerHTML = '<div class="pgn-tools-wrap"><h2 id="pgnToolsTitle" class="title" data-pgnx="toolsTitle">Member Safety & Communication</h2><div class="pgn-tool-grid"><article class="pgn-tool pgn-member-card"><h3 data-pgnx="messagesTitle">Private Messages</h3><p data-pgnx="messagesHelp">Message approved pilot members without publishing your contact details.</p><div id="pgnInboxStatus" class="member-status" data-pgnx="loginMessages">Log in to view messages.</div><div id="pgnInbox" class="pgn-list"></div></article><article class="pgn-tool pgn-member-card"><h3 data-pgnx="safetyTitle">Safety Center</h3><p data-pgnx="safetyHelp">Use Message, Block or Report on an approved member profile. Reports are reviewed privately.</p><button class="mini pgn-open" data-dialog="pgnSafety" type="button" data-pgnx="readSafety">Read Safety Rules</button></article><article id="pgnAdminCard" class="pgn-tool hidden"><h3 data-pgnx="adminTitle">Admin Review & Free VIP</h3><p data-pgnx="adminHelp">Approve profiles and grant selected members free VIP access.</p><div id="pgnAdminStatus" class="member-status"></div><div id="pgnAdminList" class="pgn-list"></div></article></div></div>';
   document.querySelector('main').appendChild(section);
 
   document.body.insertAdjacentHTML('beforeend', '<dialog id="pgnMessage" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2 data-pgnx="sendMessage">Send a private message</h2><button class="icon-btn pgn-close" type="button">×</button></div><form id="pgnMessageForm"><input type="hidden" name="receiver_id"><textarea required maxlength="1000" name="body" placeholder="Write a respectful message…"></textarea><button class="btn primary" type="submit" data-pgnx="send">Send</button><p id="pgnMessageStatus"></p></form></div></dialog><dialog id="pgnReport" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2 data-pgnx="reportMember">Report a member</h2><button class="icon-btn pgn-close" type="button">×</button></div><form id="pgnReportForm"><input type="hidden" name="reported_id"><label><span data-pgnx="reason">Reason</span><select required name="reason"><option value="">Choose</option><option value="harassment">Harassment</option><option value="fraud">Fraud or money request</option><option value="fake_profile">Fake profile</option><option value="underage">Possible underage user</option><option value="other">Other safety concern</option></select></label><label><span data-pgnx="details">Details</span><textarea name="details" maxlength="1000"></textarea></label><button class="btn pgn-danger" type="submit" data-pgnx="submitReport">Submit report</button><p id="pgnReportStatus"></p></form></div></dialog><dialog id="pgnPrivacy" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2>Privacy Policy</h2><button class="icon-btn pgn-close" type="button">×</button></div><p>PGN Singles stores account, profile, photo, message and safety-report information to operate the service. Login credentials are handled securely by Supabase and are not displayed publicly. Profiles remain private until pilot approval. PGN does not sell personal information.</p><p>Members may ask PGN administration to correct or delete their account information. Never publish passwords, financial information, identity documents or a private home address.</p></div></dialog><dialog id="pgnTerms" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2>Terms of Use</h2><button class="icon-btn pgn-close" type="button">×</button></div><p>PGN Singles is for adults aged 18 or older. Members must provide truthful information, communicate respectfully and obey applicable law. Harassment, threats, fraud, impersonation, commercial solicitation and requests for money are prohibited.</p><p>The private pilot is for testing. Payment is not active. Do not send money to another member or anyone claiming to collect PGN fees.</p></div></dialog><dialog id="pgnSafety" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2>Safety Rules</h2><button class="icon-btn pgn-close" type="button">×</button></div><ol><li>Keep conversations inside PGN until trust is established.</li><li>Never send money, passwords or identity documents.</li><li>Meet first in a public place and tell a trusted person.</li><li>Block and report anyone who pressures, threatens or deceives you.</li><li>PGN does not conduct criminal background checks during this pilot. Use your own judgment and caution.</li></ol></div></dialog>');
@@ -903,8 +911,12 @@ setLanguage(
     const card=document.getElementById('pgnAdminCard');
     if(!pgnUser){card.classList.add('hidden');return;}
     const a=await pgnClient.from('admin_users').select('user_id').eq('user_id',pgnUser.id).maybeSingle();
-    card.classList.toggle('hidden',!a.data);
-    if(!a.data)return;
+    const isAdmin=!!a.data||String(pgnUser.email||'').toLowerCase()==='pgnhelp@gmail.com';
+    card.classList.toggle('hidden',!isAdmin);
+    document.body.classList.toggle('pgn-admin-mode',isAdmin);
+    const title=document.getElementById('pgnToolsTitle');
+    if(title)title.textContent=isAdmin?'PGN Admin Dashboard':'Member Safety & Communication';
+    if(!isAdmin)return;
 
     const st=document.getElementById('pgnAdminStatus'),list=document.getElementById('pgnAdminList');
     const r=await pgnClient.from('profiles')
@@ -976,6 +988,7 @@ setLanguage(
     });
   }
   async function refreshExtra(){const s=await pgnClient.auth.getSession();pgnUser=s.data.session?.user||null;await loadInbox();await loadAdmin();enhanceCards();}
+  document.addEventListener('pgn:admin-mode',()=>setTimeout(refreshExtra,0));
   pgnClient.auth.onAuthStateChange(()=>setTimeout(refreshExtra,0));refreshExtra();
 })();
 </script>
