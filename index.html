@@ -825,12 +825,12 @@ setLanguage(
 <script>
 (() => {
   const style = document.createElement('style');
-  style.textContent = '.pgn-tools{padding:54px 20px;background:#eef4fb}.pgn-tools-wrap{max-width:1100px;margin:auto}.pgn-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.pgn-tool{background:#fff;border:1px solid #dce5f0;border-radius:18px;padding:20px;box-shadow:0 8px 24px #17355710}.pgn-tool h3{margin-top:0;color:#103b70}.pgn-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.pgn-danger{color:#9b1c31;border-color:#c43b52}.pgn-list{display:grid;gap:9px;margin-top:12px}.pgn-item{padding:11px;border:1px solid #dce5f0;border-radius:12px}.pgn-vip-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.pgn-vip-controls select{margin:0;padding:9px}.pgn-vip-controls .mini{grid-column:1/-1}.pgn-vip-badge{display:inline-block;margin-top:5px;padding:4px 9px;border-radius:999px;background:#fff4cf;color:#6c5100;font-weight:800}.pgn-legal{max-width:720px;width:calc(100% - 28px);border:0;border-radius:18px;padding:0}.pgn-legal .dialog-card{max-height:80vh;overflow:auto}.pgn-legal textarea{width:100%;min-height:110px}.pgn-legal-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}.pgn-legal-links button{border:0;background:transparent;color:#fff;text-decoration:underline;cursor:pointer}.pgn-admin-mode #profile,.pgn-admin-mode #matches,.pgn-admin-mode #membership,.pgn-admin-mode .hero,.pgn-admin-mode main>.section-soft{display:none!important}.pgn-admin-mode .pgn-tools{min-height:70vh;padding-top:36px}.pgn-admin-mode .pgn-member-card{display:none!important}.pgn-admin-mode #pgnAdminCard{display:block!important;grid-column:1/-1}.pgn-admin-mode #pgnAdminList{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media(max-width:760px){.pgn-tool-grid,.pgn-admin-mode #pgnAdminList{grid-template-columns:1fr}.pgn-vip-controls{grid-template-columns:1fr}}';
+  style.textContent = '.pgn-tools{padding:54px 20px;background:#eef4fb}.pgn-tools-wrap{max-width:1100px;margin:auto}.pgn-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.pgn-tool{background:#fff;border:1px solid #dce5f0;border-radius:18px;padding:20px;box-shadow:0 8px 24px #17355710}.pgn-tool h3{margin-top:0;color:#103b70}.pgn-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.pgn-danger{color:#9b1c31;border-color:#c43b52}.pgn-list{display:grid;gap:9px;margin-top:12px}.pgn-item{padding:16px;border:1px solid #dce5f0;border-radius:14px;background:#fff}.pgn-item.awaiting{border:2px solid #e4b52e;background:#fffdf5}.pgn-admin-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.pgn-filter.active{background:#103b70;color:#fff}.pgn-status-badge{display:inline-block;margin:5px 5px 5px 0;padding:4px 9px;border-radius:999px;background:#e8f2ff;color:#103b70;font-weight:800;font-size:.82rem}.pgn-status-badge.waiting{background:#fff1bd;color:#6c5100}.pgn-status-badge.inactive{background:#fde7ea;color:#8d1d31}.pgn-admin-photo{width:92px;height:92px;border-radius:50%;object-fit:cover;background:#e8eef6;display:block;margin-bottom:10px}.pgn-profile-details{margin:10px 0;border-top:1px solid #e2e8f0;padding-top:8px}.pgn-profile-details summary{cursor:pointer;color:#103b70;font-weight:800}.pgn-profile-details p{margin:7px 0;overflow-wrap:anywhere}.pgn-vip-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.pgn-vip-controls select{margin:0;padding:9px}.pgn-vip-controls .mini{grid-column:1/-1}.pgn-vip-badge{display:inline-block;margin-top:5px;padding:4px 9px;border-radius:999px;background:#fff4cf;color:#6c5100;font-weight:800}.pgn-legal{max-width:720px;width:calc(100% - 28px);border:0;border-radius:18px;padding:0}.pgn-legal .dialog-card{max-height:80vh;overflow:auto}.pgn-legal textarea{width:100%;min-height:110px}.pgn-legal-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}.pgn-legal-links button{border:0;background:transparent;color:#fff;text-decoration:underline;cursor:pointer}.pgn-admin-mode #profile,.pgn-admin-mode #matches,.pgn-admin-mode #membership,.pgn-admin-mode .hero,.pgn-admin-mode main>.section-soft{display:none!important}.pgn-admin-mode .pgn-tools{min-height:70vh;padding-top:36px}.pgn-admin-mode .pgn-member-card{display:none!important}.pgn-admin-mode #pgnAdminCard{display:block!important;grid-column:1/-1}.pgn-admin-mode #pgnAdminList{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media(max-width:760px){.pgn-tools{padding:30px 14px}.pgn-tool{padding:16px}.pgn-tool-grid,.pgn-admin-mode #pgnAdminList{grid-template-columns:1fr}.pgn-vip-controls{grid-template-columns:1fr}.pgn-admin-toolbar .mini{flex:1 1 42%}}';
   document.head.appendChild(style);
 
   const section = document.createElement('section');
   section.className = 'pgn-tools';
-  section.innerHTML = '<div class="pgn-tools-wrap"><h2 id="pgnToolsTitle" class="title" data-pgnx="toolsTitle">Member Safety & Communication</h2><div class="pgn-tool-grid"><article class="pgn-tool pgn-member-card"><h3 data-pgnx="messagesTitle">Private Messages</h3><p data-pgnx="messagesHelp">Message approved pilot members without publishing your contact details.</p><div id="pgnInboxStatus" class="member-status" data-pgnx="loginMessages">Log in to view messages.</div><div id="pgnInbox" class="pgn-list"></div></article><article class="pgn-tool pgn-member-card"><h3 data-pgnx="safetyTitle">Safety Center</h3><p data-pgnx="safetyHelp">Use Message, Block or Report on an approved member profile. Reports are reviewed privately.</p><button class="mini pgn-open" data-dialog="pgnSafety" type="button" data-pgnx="readSafety">Read Safety Rules</button></article><article id="pgnAdminCard" class="pgn-tool hidden"><h3 data-pgnx="adminTitle">Admin Review & Free VIP</h3><p data-pgnx="adminHelp">Approve profiles and grant selected members free VIP access.</p><div id="pgnAdminStatus" class="member-status"></div><div id="pgnAdminList" class="pgn-list"></div></article></div></div>';
+  section.innerHTML = '<div class="pgn-tools-wrap"><h2 id="pgnToolsTitle" class="title" data-pgnx="toolsTitle">Member Safety & Communication</h2><div class="pgn-tool-grid"><article class="pgn-tool pgn-member-card"><h3 data-pgnx="messagesTitle">Private Messages</h3><p data-pgnx="messagesHelp">Message approved pilot members without publishing your contact details.</p><div id="pgnInboxStatus" class="member-status" data-pgnx="loginMessages">Log in to view messages.</div><div id="pgnInbox" class="pgn-list"></div></article><article class="pgn-tool pgn-member-card"><h3 data-pgnx="safetyTitle">Safety Center</h3><p data-pgnx="safetyHelp">Use Message, Block or Report on an approved member profile. Reports are reviewed privately.</p><button class="mini pgn-open" data-dialog="pgnSafety" type="button" data-pgnx="readSafety">Read Safety Rules</button></article><article id="pgnAdminCard" class="pgn-tool hidden"><h3 data-pgnx="adminTitle">Admin Review & Free VIP</h3><p data-pgnx="adminHelp">Review each member before approval. No profile is deleted from this screen.</p><div id="pgnAdminStatus" class="member-status"></div><div class="pgn-admin-toolbar" aria-label="Profile filters"><button class="mini pgn-filter active" data-filter="waiting" type="button">Awaiting</button><button class="mini pgn-filter" data-filter="approved" type="button">Approved</button><button class="mini pgn-filter" data-filter="all" type="button">All</button><button id="pgnAdminRefresh" class="mini" type="button">Refresh</button></div><div id="pgnAdminList" class="pgn-list"></div></article></div></div>';
   document.querySelector('main').appendChild(section);
 
   document.body.insertAdjacentHTML('beforeend', '<dialog id="pgnMessage" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2 data-pgnx="sendMessage">Send a private message</h2><button class="icon-btn pgn-close" type="button">×</button></div><form id="pgnMessageForm"><input type="hidden" name="receiver_id"><textarea required maxlength="1000" name="body" placeholder="Write a respectful message…"></textarea><button class="btn primary" type="submit" data-pgnx="send">Send</button><p id="pgnMessageStatus"></p></form></div></dialog><dialog id="pgnReport" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2 data-pgnx="reportMember">Report a member</h2><button class="icon-btn pgn-close" type="button">×</button></div><form id="pgnReportForm"><input type="hidden" name="reported_id"><label><span data-pgnx="reason">Reason</span><select required name="reason"><option value="">Choose</option><option value="harassment">Harassment</option><option value="fraud">Fraud or money request</option><option value="fake_profile">Fake profile</option><option value="underage">Possible underage user</option><option value="other">Other safety concern</option></select></label><label><span data-pgnx="details">Details</span><textarea name="details" maxlength="1000"></textarea></label><button class="btn pgn-danger" type="submit" data-pgnx="submitReport">Submit report</button><p id="pgnReportStatus"></p></form></div></dialog><dialog id="pgnPrivacy" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2>Privacy Policy</h2><button class="icon-btn pgn-close" type="button">×</button></div><p>PGN Singles stores account, profile, photo, message and safety-report information to operate the service. Login credentials are handled securely by Supabase and are not displayed publicly. Profiles remain private until pilot approval. PGN does not sell personal information.</p><p>Members may ask PGN administration to correct or delete their account information. Never publish passwords, financial information, identity documents or a private home address.</p></div></dialog><dialog id="pgnTerms" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2>Terms of Use</h2><button class="icon-btn pgn-close" type="button">×</button></div><p>PGN Singles is for adults aged 18 or older. Members must provide truthful information, communicate respectfully and obey applicable law. Harassment, threats, fraud, impersonation, commercial solicitation and requests for money are prohibited.</p><p>The private pilot is for testing. Payment is not active. Do not send money to another member or anyone claiming to collect PGN fees.</p></div></dialog><dialog id="pgnSafety" class="pgn-legal"><div class="dialog-card"><div class="dialog-head"><h2>Safety Rules</h2><button class="icon-btn pgn-close" type="button">×</button></div><ol><li>Keep conversations inside PGN until trust is established.</li><li>Never send money, passwords or identity documents.</li><li>Meet first in a public place and tell a trusted person.</li><li>Block and report anyone who pressures, threatens or deceives you.</li><li>PGN does not conduct criminal background checks during this pilot. Use your own judgment and caution.</li></ol></div></dialog>');
@@ -907,72 +907,80 @@ setLanguage(
       else{img.onerror=null;img.replaceWith(Object.assign(document.createElement('div'),{className:'match-avatar'}));}
     };
   }
-  async function loadAdmin(){
-    const card=document.getElementById('pgnAdminCard');
-    if(!pgnUser){card.classList.add('hidden');return;}
-    const a=await pgnClient.from('admin_users').select('user_id').eq('user_id',pgnUser.id).maybeSingle();
-    const isAdmin=!!a.data||String(pgnUser.email||'').toLowerCase()==='pgnhelp@gmail.com';
-    card.classList.toggle('hidden',!isAdmin);
-    document.body.classList.toggle('pgn-admin-mode',isAdmin);
-    const title=document.getElementById('pgnToolsTitle');
-    if(title)title.textContent=isAdmin?'PGN Admin Dashboard':'Member Safety & Communication';
-    if(!isAdmin)return;
+  let adminFilter='waiting';
+  let adminProfiles=[];
+  let adminVipByUser=new Map();
+  let adminVipUnavailable=false;
 
-    const st=document.getElementById('pgnAdminStatus'),list=document.getElementById('pgnAdminList');
-    const r=await pgnClient.from('profiles')
-      .select('id,display_name,country,city,avatar_path,pilot_approved,active,verified')
-      .order('pilot_approved',{ascending:true})
-      .limit(100);
-    if(r.error){st.textContent=r.error.message;return;}
-
-    const vipResult=await pgnClient.from('vip_members').select('user_id,expires_at,reason,active');
-    const vipUnavailable=!!vipResult.error;
-    const vipByUser=new Map((vipResult.data||[]).map(v=>[v.user_id,v]));
-
-    const waiting=r.data.filter(p=>!p.pilot_approved).length;
-    st.textContent=r.data.length
-      ? r.data.length+' total profile(s) · '+waiting+' awaiting review.'
-      : 'No profiles have been created yet.';
+  function profileAge(birthDate){
+    if(!birthDate)return '';
+    const born=new Date(birthDate),today=new Date();
+    if(Number.isNaN(born.getTime()))return '';
+    let age=today.getFullYear()-born.getFullYear();
+    if(today.getMonth()<born.getMonth()||(today.getMonth()===born.getMonth()&&today.getDate()<born.getDate()))age--;
+    return age>=18&&age<120?String(age):'';
+  }
+  function adminInfo(label,value){return value?'<p><strong>'+esc(label)+':</strong> '+esc(value)+'</p>':'';}
+  async function loadAdminPhoto(card,profile){
+    const holder=card.querySelector('.pgn-photo-holder');
+    if(!holder)return;
+    try{
+      const urls=await adminAvatarUrls(profile);
+      if(!urls.length){holder.innerHTML='<div class="match-avatar" aria-label="Photo not uploaded"></div><small style="color:#9b1c31">Photo not uploaded</small>';return;}
+      holder.innerHTML='<img class="pgn-admin-photo" alt="Profile photo of '+esc(profile.display_name||'member')+'" src="'+esc(urls[0])+'">';
+      adminAvatarFallback(holder.querySelector('img'),urls);
+    }catch(_){holder.innerHTML='<div class="match-avatar"></div><small style="color:#9b1c31">Photo could not be loaded</small>';}
+  }
+  function renderAdminProfiles(){
+    const list=document.getElementById('pgnAdminList');
+    if(!list)return;
+    const shown=adminProfiles.filter(p=>adminFilter==='all'||(adminFilter==='waiting'?!p.pilot_approved:!!p.pilot_approved));
     list.innerHTML='';
-
-    for(const p of r.data){
-      const avatarUrls=await adminAvatarUrls(p);
-      const vip=vipByUser.get(p.id);
+    if(!shown.length){list.innerHTML='<div class="pgn-item"><strong>No profiles in this section.</strong></div>';return;}
+    for(const p of shown){
+      const vip=adminVipByUser.get(p.id);
       const vipActive=!!vip?.active&&(!vip.expires_at||new Date(vip.expires_at)>new Date());
-      const vipLabel=vipActive
-        ? (vip.expires_at?'VIP until '+new Date(vip.expires_at).toLocaleDateString():'VIP · Lifetime')
-        : '';
-      const x=document.createElement('div');
-      x.className='pgn-item';
-      x.innerHTML=(avatarUrls.length
-        ? '<img class="match-avatar" alt="Profile photo of '+esc(p.display_name||'member')+'" src="'+esc(avatarUrls[0])+'">'
-        : '<div class="match-avatar" aria-label="Photo not uploaded"></div><p><small style="color:#9b1c31">Photo not uploaded</small></p>')+
-        '<strong>'+esc(p.display_name||'Unnamed')+(p.verified?' ✓':'')+'</strong>'+
-        '<p>'+esc([p.city,p.country].filter(Boolean).join(', '))+'</p>'+
-        '<p><small>'+(p.pilot_approved?'Approved profile':'Awaiting approval')+(p.active===false?' · Inactive':'')+'</small></p>'+
+      const vipLabel=vipActive?(vip.expires_at?'VIP until '+new Date(vip.expires_at).toLocaleDateString():'VIP · Lifetime'):'';
+      const age=profileAge(p.birth_date);
+      const x=document.createElement('article');
+      x.className='pgn-item'+(!p.pilot_approved?' awaiting':'');
+      x.dataset.id=p.id;
+      x.innerHTML='<div class="pgn-photo-holder"><div class="match-avatar"></div><small>Loading photo…</small></div>'+              
+        '<h3>'+esc(p.display_name||'Unnamed')+(p.verified?' ✓':'')+'</h3>'+ 
+        '<p>'+esc([age&&age+' years',p.gender,p.city,p.country].filter(Boolean).join(' • '))+'</p>'+ 
+        '<span class="pgn-status-badge '+(!p.pilot_approved?'waiting':'')+'">'+(p.pilot_approved?'Approved':'Awaiting review')+'</span>'+ 
+        (p.active===false?'<span class="pgn-status-badge inactive">Suspended</span>':'<span class="pgn-status-badge">Active</span>')+
         (vipLabel?'<span class="pgn-vip-badge">'+esc(vipLabel)+'</span>':'')+
-        (p.pilot_approved
-          ? '<button class="mini" type="button" disabled>Approved ✓</button>'
-          : '<button class="mini pgn-approve" data-id="'+p.id+'" type="button">Approve pilot profile</button>')+
-        (vipUnavailable
-          ? '<p><small style="color:#9b1c31">VIP database setup is required.</small></p>'
-          : (vipActive
-            ? '<div class="pgn-actions"><button class="mini pgn-danger pgn-remove-vip" data-id="'+p.id+'" type="button">Remove VIP</button></div>'
-            : '<div class="pgn-vip-controls"><select class="pgn-vip-duration" aria-label="VIP duration"><option value="7">7 days</option><option value="30">30 days</option><option value="365">1 year</option><option value="lifetime">Lifetime</option></select><select class="pgn-vip-reason" aria-label="VIP reason"><option value="Founder">Founder</option><option value="Guest">Guest</option><option value="Promotion">Promotion</option><option value="Supporter">Supporter</option></select><button class="mini primary-mini pgn-grant-vip" data-id="'+p.id+'" type="button">Grant Free VIP</button></div>'));
+        '<details class="pgn-profile-details"><summary>View full profile</summary>'+ 
+          adminInfo('Languages',Array.isArray(p.languages)?p.languages.join(', '):p.languages)+adminInfo('Education',p.education)+adminInfo('Faith',p.faith)+adminInfo('About',p.bio)+adminInfo('Looking for',p.looking_for)+
+        '</details><div class="pgn-actions">'+
+        (p.pilot_approved?'<button class="mini" type="button" disabled>Approved ✓</button>':'<button class="mini primary-mini pgn-approve" data-id="'+p.id+'" type="button">Approve profile</button>')+
+        (p.active===false?'<button class="mini pgn-toggle-active" data-id="'+p.id+'" data-active="true" type="button">Restore profile</button>':'<button class="mini pgn-danger pgn-toggle-active" data-id="'+p.id+'" data-active="false" type="button">Suspend profile</button>')+'</div>'+ 
+        (adminVipUnavailable?'<p><small style="color:#9b1c31">VIP database setup is required.</small></p>':(vipActive?'<div class="pgn-actions"><button class="mini pgn-danger pgn-remove-vip" data-id="'+p.id+'" type="button">Remove VIP</button></div>':'<div class="pgn-vip-controls"><select class="pgn-vip-duration" aria-label="VIP duration"><option value="7">7 days</option><option value="30">30 days</option><option value="365">1 year</option><option value="lifetime">Lifetime</option></select><select class="pgn-vip-reason" aria-label="VIP reason"><option value="Founder">Founder</option><option value="Guest">Guest</option><option value="Promotion">Promotion</option><option value="Supporter">Supporter</option></select><button class="mini primary-mini pgn-grant-vip" data-id="'+p.id+'" type="button">Grant Free VIP</button></div>'));
       list.appendChild(x);
-      adminAvatarFallback(x.querySelector('img.match-avatar'),avatarUrls);
+      loadAdminPhoto(x,p);
     }
-
+    bindAdminActions();
+  }
+  function bindAdminActions(){
+    const st=document.getElementById('pgnAdminStatus');
     document.querySelectorAll('.pgn-approve').forEach(b=>b.onclick=async()=>{
-      const result=await pgnClient.from('profiles').update({pilot_approved:true}).eq('id',b.dataset.id);
-      b.textContent=result.error?'Approval failed':'Approved ✓';
-      b.disabled=!result.error;
-      if(!result.error)loadAdmin();
+      if(!confirm('Approve this profile and make it visible to approved members?'))return;
+      b.disabled=true;b.textContent='Approving…';
+      const result=await pgnClient.from('profiles').update({pilot_approved:true,active:true}).eq('id',b.dataset.id);
+      if(result.error){b.disabled=false;b.textContent='Approve profile';return setStatus(st,'Approval failed: '+result.error.message);}
+      setStatus(st,'Profile approved successfully.',true);loadAdmin();
+    });
+    document.querySelectorAll('.pgn-toggle-active').forEach(b=>b.onclick=async()=>{
+      const active=b.dataset.active==='true';
+      if(!active&&!confirm('Suspend this profile? It will no longer appear to members.'))return;
+      b.disabled=true;
+      const result=await pgnClient.from('profiles').update({active}).eq('id',b.dataset.id);
+      if(result.error){b.disabled=false;return setStatus(st,'Profile was not updated: '+result.error.message);}
+      setStatus(st,active?'Profile restored.':'Profile suspended.',true);loadAdmin();
     });
     document.querySelectorAll('.pgn-grant-vip').forEach(b=>b.onclick=async()=>{
-      const controls=b.closest('.pgn-vip-controls');
-      const duration=controls.querySelector('.pgn-vip-duration').value;
-      const reason=controls.querySelector('.pgn-vip-reason').value;
+      const controls=b.closest('.pgn-vip-controls'),duration=controls.querySelector('.pgn-vip-duration').value,reason=controls.querySelector('.pgn-vip-reason').value;
       const expiresAt=duration==='lifetime'?null:new Date(Date.now()+Number(duration)*86400000).toISOString();
       b.disabled=true;b.textContent='Saving…';
       const result=await pgnClient.from('vip_members').upsert({user_id:b.dataset.id,granted_by:pgnUser.id,starts_at:new Date().toISOString(),expires_at:expiresAt,reason,active:true},{onConflict:'user_id'});
@@ -987,6 +995,37 @@ setLanguage(
       setStatus(st,'VIP removed.',true);loadAdmin();
     });
   }
+  async function loadAdmin(){
+    const card=document.getElementById('pgnAdminCard');
+    if(!pgnUser){card.classList.add('hidden');return;}
+    const a=await pgnClient.from('admin_users').select('user_id').eq('user_id',pgnUser.id).maybeSingle();
+    const isAdmin=!!a.data||String(pgnUser.email||'').toLowerCase()==='pgnhelp@gmail.com';
+    card.classList.toggle('hidden',!isAdmin);
+    document.body.classList.toggle('pgn-admin-mode',isAdmin);
+    const title=document.getElementById('pgnToolsTitle');
+    if(title)title.textContent=isAdmin?'PGN Admin Dashboard':'Member Safety & Communication';
+    if(!isAdmin)return;
+
+    const st=document.getElementById('pgnAdminStatus'),list=document.getElementById('pgnAdminList');
+    const r=await pgnClient.from('profiles')
+      .select('id,display_name,birth_date,gender,country,city,languages,education,faith,bio,looking_for,avatar_path,pilot_approved,active,verified')
+      .order('pilot_approved',{ascending:true})
+      .limit(100);
+    if(r.error){st.textContent=r.error.message;return;}
+
+    const vipResult=await pgnClient.from('vip_members').select('user_id,expires_at,reason,active');
+    adminVipUnavailable=!!vipResult.error;
+    adminVipByUser=new Map((vipResult.data||[]).map(v=>[v.user_id,v]));
+    adminProfiles=r.data||[];
+
+    const waiting=r.data.filter(p=>!p.pilot_approved).length;
+    st.textContent=r.data.length
+      ? r.data.length+' total profile(s) · '+waiting+' awaiting review.'
+      : 'No profiles have been created yet.';
+    renderAdminProfiles();
+  }
+  document.querySelectorAll('.pgn-filter').forEach(b=>b.addEventListener('click',()=>{adminFilter=b.dataset.filter;document.querySelectorAll('.pgn-filter').forEach(x=>x.classList.toggle('active',x===b));renderAdminProfiles();}));
+  document.getElementById('pgnAdminRefresh').addEventListener('click',loadAdmin);
   async function refreshExtra(){const s=await pgnClient.auth.getSession();pgnUser=s.data.session?.user||null;await loadInbox();await loadAdmin();enhanceCards();}
   document.addEventListener('pgn:admin-mode',()=>setTimeout(refreshExtra,0));
   pgnClient.auth.onAuthStateChange(()=>setTimeout(refreshExtra,0));refreshExtra();
