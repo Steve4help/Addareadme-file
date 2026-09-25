@@ -736,16 +736,10 @@ setLanguage(
     const urls = [];
     for (const path of [...new Set(paths.filter(Boolean))]) {
       if (/^https?:\/\//i.test(path)) { urls.push(path); continue; }
+      // The avatars bucket is private. A signed URL is the reliable display
+      // method after the storage SELECT policy approves this member/admin.
       const signed = await storageClient.storage.from('avatars').createSignedUrl(path, expiresIn);
       if (signed.data?.signedUrl) urls.push(signed.data.signedUrl);
-      const publicResult = storageClient.storage.from('avatars').getPublicUrl(path);
-      if (publicResult.data?.publicUrl) urls.push(publicResult.data.publicUrl);
-      const downloaded = await storageClient.storage.from('avatars').download(path);
-      if (downloaded.data) {
-        const objectUrl = URL.createObjectURL(downloaded.data);
-        avatarObjectUrls.add(objectUrl);
-        urls.push(objectUrl);
-      }
     }
     return [...new Set(urls)];
   }
