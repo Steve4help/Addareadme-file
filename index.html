@@ -729,18 +729,27 @@ setLanguage(
     if (profile.id) {
       ['jpg','jpeg','png','webp'].forEach(ext => paths.push(profile.id + '/profile.' + ext));
       // Older PGN versions preserved the original filename. Discover it too.
-      const listed = await storageClient.storage.from('avatars').list(profile.id, {limit:20, sortBy:{column:'updated_at',order:'desc'}});
-      if (listed.data) listed.data
-        .filter(file => file.name && !file.name.startsWith('.') && /\.(?:jpe?g|png|webp)$/i.test(file.name))
-        .forEach(file => paths.push(profile.id + '/' + file.name));
+      try {
+        const listed = await storageClient.storage.from('avatars').list(profile.id, {limit:20, sortBy:{column:'updated_at',order:'desc'}});
+        if (listed.data) listed.data
+          .filter(file => file.name && !file.name.startsWith('.') && /\.(?:jpe?g|png|webp)$/i.test(file.name))
+          .forEach(file => paths.push(profile.id + '/' + file.name));
+      } catch (_) {
+        // A denied folder listing must not prevent the saved avatar_path from
+        // being signed and displayed.
+      }
     }
     const urls = [];
     for (const path of [...new Set(paths.filter(Boolean))]) {
       if (/^https?:\/\//i.test(path)) { urls.push(path); continue; }
       // The avatars bucket is private. A signed URL is the reliable display
       // method after the storage SELECT policy approves this member/admin.
-      const signed = await storageClient.storage.from('avatars').createSignedUrl(path, expiresIn);
-      if (signed.data?.signedUrl) urls.push(signed.data.signedUrl);
+      try {
+        const signed = await storageClient.storage.from('avatars').createSignedUrl(path, expiresIn);
+        if (signed.data?.signedUrl) urls.push(signed.data.signedUrl);
+      } catch (_) {
+        // Continue through legacy extensions instead of failing the card.
+      }
     }
     return [...new Set(urls)];
   }
@@ -926,7 +935,7 @@ setLanguage(
     if(!holder)return;
     try{
       const urls=await adminAvatarUrls(profile);
-      if(!urls.length){holder.innerHTML='<div class="match-avatar" aria-label="Photo not uploaded"></div><small style="color:#9b1c31">Photo not uploaded</small>';return;}
+      if(!urls.length){holder.innerHTML='<div class="match-avatar" aria-label="Photo unavailable"></div><small style="color:#9b1c31">'+(profile.avatar_path?'Photo access needs database setup':'Photo not uploaded')+'</small>';return;}
       holder.innerHTML='<img class="pgn-admin-photo" alt="Profile photo of '+esc(profile.display_name||'member')+'" src="'+esc(urls[0])+'">';
       adminAvatarFallback(holder.querySelector('img'),urls);
     }catch(_){holder.innerHTML='<div class="match-avatar"></div><small style="color:#9b1c31">Photo could not be loaded</small>';}
